@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Kavics</string>
+    <string name="title_kavic_list">Kavics</string>
+    <string name="title_kavic_detail">Kavic Detail</string>
+    <string name="itemCreateKavic">itemCreateKavic</string>
+
+    <string name="lblKavicTitle">Kavic title</string>
+    <string name="lblKavicDueDate">Due date</string>
+    <string name="lblKavicDescription">Description</string>
+    <string name="btnOk">OK</string>
+    <string name="btnCancel">Cancel</string>
+    <string name="dummyDescription">dummyDescription</string>
+    <string name="title_activity_experiment">experiment</string>
+    <string name="duedate">DueDate</string>
+    <string name="titleOfTheKavic">Title</string>
+    <string name="title_activity_tab">TabActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
+</resources>
