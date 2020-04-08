@@ -73,6 +73,7 @@ class KavicListActivity : AppCompatActivity(), KavicItemClickListener,
 
     //this is the initialization of the kavics list
     private fun setupRecyclerView() {
+        
         //getting the already existing kavics from the database
         val kavics = kavicDAO.getKavics()
         simpleItemRecyclerViewAdapter = SimpleItemRecyclerViewAdapter()
