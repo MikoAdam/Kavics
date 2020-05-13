@@ -3,10 +3,8 @@ package com.kavics.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.kavics.KavicListActivity
 import com.kavics.R
 import com.kavics.model.Kavic
 import kotlinx.android.synthetic.main.row_kavic.view.*
@@ -44,9 +42,9 @@ class SimpleItemRecyclerViewAdapter :
 
     //adding multiple kavics to the list
     fun addAll(kavics: List<Kavic>) {
-        val size = kavicList.size
-        kavicList += kavics
-        notifyItemRangeInserted(size, kavics.size)
+        kavicList.clear()
+        kavicList.addAll(kavics)
+        notifyDataSetChanged()
     }
 
     //delete a kavic from the recyclerview
@@ -63,7 +61,6 @@ class SimpleItemRecyclerViewAdapter :
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvDueDate: TextView = itemView.tvDueDate
         val tvTitle: TextView = itemView.tvTitle
-        private val btnDone: Button = itemView.btnDone
 
         var kavic: Kavic? = null
 
@@ -73,13 +70,10 @@ class SimpleItemRecyclerViewAdapter :
             }
 
             itemView.setOnLongClickListener { view ->
-                itemClickListener?.onItemLongClick(adapterPosition, view)
+                kavic?.let { itemClickListener?.onItemLongClick(adapterPosition, view, it) }
                 true
             }
 
-            btnDone.setOnClickListener {
-                kavic?.let { kavic -> KavicListActivity.kavicDAO.setDoneKavics(kavic.id) }
-            }
         }
     }
 }

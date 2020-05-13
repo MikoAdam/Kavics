@@ -5,41 +5,34 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
+import androidx.appcompat.widget.PopupMenu
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.kavics.adapter.KavicItemClickListener
 import com.kavics.adapter.SimpleItemRecyclerViewAdapter
-import com.kavics.database.AppDatabase
 import com.kavics.database.KavicDAO
 import com.kavics.fragament.KavicCreateFragment
-import com.kavics.fragament.KavicDetailFragment
 import com.kavics.model.Kavic
+import com.kavics.viewmodel.KavicViewModel
 import kotlinx.android.synthetic.main.activity_kavic_list.*
 import kotlinx.android.synthetic.main.kavic_list.*
+
 
 class KavicListActivity : AppCompatActivity(), KavicItemClickListener,
     KavicCreateFragment.KavicCreatedListener {
 
-    //creation of the database
     companion object {
         lateinit var kavicDAO: KavicDAO
             private set
     }
 
-    //this is for the tablet mode
-    private var twoPane: Boolean = false
     private lateinit var simpleItemRecyclerViewAdapter: SimpleItemRecyclerViewAdapter
+    private lateinit var kavicViewModel: KavicViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kavic_list)
-
-        //building up the database
-        kavicDAO = Room.databaseBuilder(this, AppDatabase::class.java, "Kavics")
-            .allowMainThreadQueries()
-            .build()
-            .kavicDAO!!
 
         //this is the top right menu
         setSupportActionBar(toolbar)
@@ -51,77 +44,43 @@ class KavicListActivity : AppCompatActivity(), KavicItemClickListener,
             kavicCreateFragment.show(supportFragmentManager, "TAG")
         }
 
-        // it is for tablet mode
-        if (kavic_detail_container != null) {
-            twoPane = true
+        kavicViewModel = ViewModelProvider(this).get(KavicViewModel::class.java)
+        kavicViewModel.allKavics.observe(this) { kavic ->
+            simpleItemRecyclerViewAdapter.addAll(kavic)
         }
 
         setupRecyclerView()
     }
 
-    //to not to show outdated kavics on the recyclerview it reloads every time
-    override fun onStart() {
-        setupRecyclerView()
-        super.onStart()
-    }
-
-    //to not to show outdated kavics on the recyclerview it reloads every time
-    override fun onResume() {
-        setupRecyclerView()
-        super.onResume()
-    }
-
     //this is the initialization of the kavics list
     private fun setupRecyclerView() {
-        
-        //getting the already existing kavics from the database
-        val kavics = kavicDAO.getKavics()
         simpleItemRecyclerViewAdapter = SimpleItemRecyclerViewAdapter()
         simpleItemRecyclerViewAdapter.itemClickListener = this
-        simpleItemRecyclerViewAdapter.addAll(kavics as List<Kavic>)
         kavic_list.adapter = simpleItemRecyclerViewAdapter
     }
 
     // when you click on a kavic
     override fun onItemClick(kavic: Kavic) {
-        if (twoPane) {
-            val fragment = KavicDetailFragment.newInstance(kavic.description)
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.kavic_detail_container, fragment)
-                .commit()
-        } else {
-            val intent = Intent(this, KavicDetailActivity::class.java)
-            intent.putExtra(KavicDetailActivity.KEY_DESC, kavic.description)
-            startActivity(intent)
-        }
+        val intent = Intent(this, KavicDetailActivity::class.java)
+        intent.putExtra(KavicDetailActivity.KEY_DESC, kavic.description)
+        startActivity(intent)
     }
 
     //long click on a kavic
-    override fun onItemLongClick(position: Int, view: View): Boolean {
+    override fun onItemLongClick(position: Int, view: View, kavic: Kavic): Boolean {
         val popup = PopupMenu(this, view)
         popup.inflate(R.menu.menu_kavic)
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.delete -> deleteFromDatabaseAndList(position)
+                R.id.delete -> {
+                    kavicViewModel.delete(kavic)
+                    return@setOnMenuItemClickListener true
+                }
             }
             false
         }
         popup.show()
         return false
-    }
-
-    //deletes both from database and recycle list
-    private fun deleteFromDatabaseAndList(position: Int) {
-        //get the id from position then kavic by id then deleting it from the database
-        val kavicId = simpleItemRecyclerViewAdapter.getKavicIdFromPosition(position)
-        val kavic = kavicDAO.getKavicsById(kavicId)
-        kavic?.let { kavicDAO.delete(it) }
-
-        //delete kavic from the recyclerview too
-        simpleItemRecyclerViewAdapter.deleteRow(position)
-        //update the recyclerview
-        simpleItemRecyclerViewAdapter.notifyDataSetChanged()
     }
 
     //this makes the upper right menu with the menu list
@@ -143,7 +102,6 @@ class KavicListActivity : AppCompatActivity(), KavicItemClickListener,
 
     //putting the newly created kavic into the database and recyclerview
     override fun onKavicCreated(kavic: Kavic) {
-        simpleItemRecyclerViewAdapter.addItem(kavic)
-        kavicDAO.insert(kavic)
+        kavicViewModel.insert(kavic)
     }
 }

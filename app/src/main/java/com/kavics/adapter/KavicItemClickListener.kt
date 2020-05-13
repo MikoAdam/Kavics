@@ -5,5 +5,5 @@ import com.kavics.model.Kavic
 
 interface KavicItemClickListener {
     fun onItemClick(kavic: Kavic)
-    fun onItemLongClick(position: Int, view: View): Boolean
+    fun onItemLongClick(position: Int, view: View, kavic: Kavic): Boolean
 }
