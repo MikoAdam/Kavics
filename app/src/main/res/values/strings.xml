@@ -3,19 +3,15 @@
     <string name="title_kavic_list">Kavics</string>
     <string name="title_kavic_detail">Kavic Detail</string>
     <string name="itemCreateKavic">itemCreateKavic</string>
-
-    <string name="lblKavicTitle">Kavic title</string>
-    <string name="lblKavicDueDate">Due date</string>
-    <string name="lblKavicDescription">Description</string>
-    <string name="btnOk">OK</string>
     <string name="btnCancel">Cancel</string>
-    <string name="dummyDescription">dummyDescription</string>
-    <string name="title_activity_experiment">experiment</string>
-    <string name="duedate">DueDate</string>
-    <string name="titleOfTheKavic">Title</string>
-    <string name="title_activity_tab">TabActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="title_item_list">Items</string>
-    <string name="title_item_detail">Item Detail</string>
+
+    <string name="date_yyyy_MM_dd">%s %s %s</string>
+
+    <string name="today">Cancel</string>
+    <string name="tomorrow">Cancel</string>
+    <string name="save">Save</string>
+    <string name="title">Title:</string>
+    <string name="create">Create</string>
+    <string name="select_deadline">Select deadline</string>
+
 </resources>

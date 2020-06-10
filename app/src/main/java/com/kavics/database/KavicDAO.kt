@@ -2,27 +2,28 @@ package com.kavics.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.kavics.model.KavicItem
 
 @Dao
 interface KavicDAO {
     @Insert
-    fun insert(kavic: RoomKavic)
+    fun insert(kavicItem: KavicItem)
 
     @Update
-    fun update(kavic: RoomKavic)
+    fun update(kavicItem: KavicItem)
 
     @Delete
-    fun delete(kavic: RoomKavic)
+    fun delete(kavicItem: KavicItem)
 
-    @Query("SELECT * FROM Kavics")
-    fun getKavics(): LiveData<List<RoomKavic?>>
+    @Query("SELECT * FROM kavicsDatabase ORDER BY deadline")
+    fun getKavics(): LiveData<List<KavicItem>>
 
-    @Query("SELECT * FROM Kavics WHERE id = :id")
-    fun getKavicsById(id: Int): RoomKavic?
+    @Query("SELECT * FROM kavicsDatabase WHERE id = :id")
+    fun getKavicsById(id: Int): KavicItem?
 
-    @Query("SELECT * FROM Kavics WHERE done = 0")
-    fun getNotDoneKavics(): List<RoomKavic?>?
+    @Query("SELECT * FROM kavicsDatabase WHERE done = 0")
+    fun getNotDoneKavics(): List<KavicItem?>?
 
-    @Query("Update Kavics set done = 1 WHERE id = :id")
+    @Query("Update kavicsDatabase set done = 1 WHERE id = :id")
     fun setDoneKavics(id: Int)
 }

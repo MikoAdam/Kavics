@@ -3,16 +3,16 @@ package com.kavics.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kavics.KavicApplication
+import com.kavics.application.KavicApplication
 import com.kavics.database.Repository
-import com.kavics.model.Kavic
+import com.kavics.model.KavicItem
 import kotlinx.coroutines.launch
 
 class KavicViewModel : ViewModel() {
 
     private val repository: Repository
 
-    val allKavics: LiveData<List<Kavic>>
+    var allKavics: LiveData<List<KavicItem>>
 
     init {
         val kavicDao = KavicApplication.kavicDatabase.kavicDAO()
@@ -20,12 +20,15 @@ class KavicViewModel : ViewModel() {
         allKavics = repository.getAllKavics()
     }
 
-    fun insert(kavic: Kavic) = viewModelScope.launch {
-        repository.insert(kavic)
+    fun insert(kavicItem: KavicItem) = viewModelScope.launch {
+        repository.insert(kavicItem)
     }
 
-    fun delete(kavic: Kavic) = viewModelScope.launch {
-        repository.delete(kavic)
+    fun delete(kavicItem: KavicItem) = viewModelScope.launch {
+        repository.delete(kavicItem)
     }
 
+    fun update(kavicItem: KavicItem) = viewModelScope.launch {
+        repository.update(kavicItem)
+    }
 }

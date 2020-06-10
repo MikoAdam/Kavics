@@ -1,4 +1,4 @@
-package com.kavics
+package com.kavics.application
 
 import android.app.Application
 import androidx.room.Room
