@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.preference.PreferenceManager
+import com.kavics.adapter.DeadlineHelper
 import com.kavics.adapter.KavicItemClickListener
 import com.kavics.adapter.SimpleItemRecyclerViewAdapter
 import com.kavics.create.CreateKavicActivity
@@ -16,11 +18,27 @@ import com.kavics.model.KavicItem
 import com.kavics.viewmodel.KavicViewModel
 import kotlinx.android.synthetic.main.activity_kavic_list.*
 import kotlinx.android.synthetic.main.kavic_list.*
+import java.util.*
+
 
 class MainActivity : AppCompatActivity(), KavicItemClickListener {
 
     private lateinit var simpleItemRecyclerViewAdapter: SimpleItemRecyclerViewAdapter
     private lateinit var kavicViewModel: KavicViewModel
+
+    override fun onResume() {
+        super.onResume()
+        val settings = PreferenceManager.getDefaultSharedPreferences(this)
+        val lastTimeStarted = settings.getInt("last_time_started", -1)
+        val calendar: Calendar = Calendar.getInstance()
+        val today: Int = calendar.get(Calendar.DAY_OF_YEAR)
+        if (today != lastTimeStarted) {
+            deleteOldKavics()
+            val editor = settings.edit()
+            editor.putInt("last_time_started", today)
+            editor.apply()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +57,10 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener {
         }
 
         setupRecyclerView()
+    }
+
+    private fun deleteOldKavics() {
+        kavicViewModel.deleteOld(DeadlineHelper().getToday())
     }
 
     private fun setupRecyclerView() {
@@ -67,6 +89,11 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener {
         }
         popup.show()
         return false
+    }
+
+    override fun checkBoxChecked(kavicItem: KavicItem) {
+        kavicItem.done = true
+        kavicViewModel.update(kavicItem)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

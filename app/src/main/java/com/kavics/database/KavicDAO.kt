@@ -16,6 +16,9 @@ interface KavicDAO {
     fun delete(kavicItem: KavicItem)
 
     @Query("SELECT * FROM kavicsDatabase ORDER BY deadline")
+    fun getKavicsAll(): LiveData<List<KavicItem>>
+
+    @Query("SELECT * FROM kavicsDatabase WHERE done = 0 ORDER BY deadline")
     fun getKavics(): LiveData<List<KavicItem>>
 
     @Query("SELECT * FROM kavicsDatabase WHERE id = :id")
@@ -26,4 +29,8 @@ interface KavicDAO {
 
     @Query("Update kavicsDatabase set done = 1 WHERE id = :id")
     fun setDoneKavics(id: Int)
+
+    @Query("DELETE FROM kavicsDatabase WHERE deadline <= :today")
+    fun deleteOld(today: String)
+
 }

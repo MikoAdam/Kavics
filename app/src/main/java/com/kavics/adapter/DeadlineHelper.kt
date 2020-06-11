@@ -7,7 +7,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class deadlineHelper {
+class DeadlineHelper {
 
     fun getListWithDates(kavicItemList: List<Item>): List<Item> {
         if (!kavicItemList.isNullOrEmpty()) {

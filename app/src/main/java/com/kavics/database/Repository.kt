@@ -25,4 +25,8 @@ class Repository(private val kavicDAO: KavicDAO) {
         kavicDAO.update(kavicItem)
     }
 
+    fun deleteOld(today: String) {
+        kavicDAO.deleteOld(today)
+    }
+
 }

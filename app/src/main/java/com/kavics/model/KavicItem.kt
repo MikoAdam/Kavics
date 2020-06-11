@@ -12,8 +12,6 @@ class KavicItem(
     var title: String = "",
     @ColumnInfo(name = "kavicDeadline")
     override var deadline: String = "",
-    var labels: String = "",
-    var done: Boolean = false,
-    var now: Boolean = false,
-    var description: String = ""
+    var repeatDays: Int = 0,
+    var done: Boolean = false
 ) : Serializable, Item()

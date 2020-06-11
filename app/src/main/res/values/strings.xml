@@ -7,11 +7,12 @@
 
     <string name="date_yyyy_MM_dd">%s %s %s</string>
 
-    <string name="today">Cancel</string>
-    <string name="tomorrow">Cancel</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Today</string>
     <string name="save">Save</string>
     <string name="title">Title:</string>
     <string name="create">Create</string>
     <string name="select_deadline">Select deadline</string>
+    <string name="every_day">Every day</string>
 
 </resources>

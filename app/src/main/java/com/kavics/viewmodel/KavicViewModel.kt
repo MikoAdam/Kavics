@@ -31,4 +31,8 @@ class KavicViewModel : ViewModel() {
     fun update(kavicItem: KavicItem) = viewModelScope.launch {
         repository.update(kavicItem)
     }
+
+    fun deleteOld(today: String) {
+        repository.deleteOld(today)
+    }
 }

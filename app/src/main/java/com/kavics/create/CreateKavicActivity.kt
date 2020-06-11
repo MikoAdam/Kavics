@@ -1,11 +1,14 @@
 package com.kavics.create
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.kavics.MainActivity
 import com.kavics.R
+import com.kavics.adapter.DeadlineHelper
 import com.kavics.model.KavicItem
 import com.kavics.viewmodel.KavicViewModel
 import kotlinx.android.synthetic.main.activity_create_kavic.*
@@ -32,9 +35,8 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                     KavicItem(
                         title = editTextKavicTitle.text.toString(),
                         deadline = deadlineDate,
-                        labels = "",
                         done = false,
-                        now = false
+                        repeatDays = checkBoxState()
                     )
                 )
 
@@ -45,7 +47,15 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         }
 
         btnCancelCreateKavic.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }
 
+    private fun checkBoxState(): Int {
+        return if (checkBoxDaily.isChecked) {
+            1
+        } else {
+            0
         }
     }
 
@@ -63,6 +73,8 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 
+        val deadlineHelper = DeadlineHelper()
+
         var monthAsString = month.toString()
         if (month.toString().length == 1) {
             monthAsString = "0${month + 1}"
@@ -73,11 +85,16 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
             dayAsString = "0$dayOfMonth"
         }
 
-        textViewSelectedDate.text =
-            getString(R.string.date_yyyy_MM_dd, year.toString(), monthAsString, dayAsString)
+        if (deadlineHelper.getToday() <= "$year $monthAsString $dayAsString") {
 
+            textViewSelectedDate.text =
+                getString(R.string.date_yyyy_MM_dd, year.toString(), monthAsString, dayAsString)
 
-        deadlineDate = "$year $monthAsString $dayAsString"
+            deadlineDate = "$year $monthAsString $dayAsString"
+        } else {
+            Toast.makeText(this, "You can't choose past date.", Toast.LENGTH_LONG).show()
+        }
+
     }
 
 }

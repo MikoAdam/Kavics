@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.kavics.R
@@ -12,13 +13,15 @@ import com.kavics.model.Item
 import com.kavics.model.KavicItem
 import kotlinx.android.synthetic.main.deadline_item.view.*
 import kotlinx.android.synthetic.main.kavic_cardview.view.*
-
+import java.util.*
+import kotlin.concurrent.schedule
 
 class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val itemList = mutableListOf<Item>()
+    private lateinit var timer: TimerTask
+    private val kavicList = mutableListOf<Item>()
     var itemClickListener: KavicItemClickListener? = null
-    private val dateHelper = deadlineHelper()
+    private val dateHelper = DeadlineHelper()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == 1) {
@@ -33,7 +36,7 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (itemList[position] is KavicItem) {
+        return if (kavicList[position] is KavicItem) {
             1
         } else {
             0
@@ -41,12 +44,11 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val kavic = itemList[position]
+        val kavic = kavicList[position]
 
         if (holder is KavicCardViewViewHolder) {
             holder.kavicItem = kavic as KavicItem
             holder.tvTitle.text = kavic.title
-            holder.tvDate.text = kavic.deadline
         } else if (holder is DeadlineDateViewViewHolder) {
 
             holder.kavicItem = kavic as DeadlineItem
@@ -54,35 +56,34 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
             when (kavic.deadline) {
                 dateHelper.getToday() -> {
                     holder.setBackgroundColor(Color.RED)
-                    holder.tvDeadlineDate.text = R.string.today.toString()
+                    holder.tvDeadlineDate.text = "Today"
                 }
                 dateHelper.getTomorrow() -> {
                     holder.setBackgroundColor(Color.YELLOW)
-                    holder.tvDeadlineDate.text = R.string.tomorrow.toString()
+                    holder.tvDeadlineDate.text = "Tomorrow"
                 }
                 else -> {
                     holder.setBackgroundColor(Color.GREEN)
                     holder.tvDeadlineDate.text = kavic.deadline
                 }
             }
-
         }
     }
 
     fun addAll(kavicItems: List<KavicItem>) {
         val kavicsAndDates = dateHelper.getListWithDates(kavicItems)
-        itemList.clear()
-        itemList.addAll(kavicsAndDates)
+        kavicList.clear()
+        kavicList.addAll(kavicsAndDates)
         notifyDataSetChanged()
     }
 
-    override fun getItemCount() = itemList.size
+    override fun getItemCount() = kavicList.size
 
     inner class KavicCardViewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val tvTitle: TextView = itemView.textViewKavicItemTitle
-        val tvDate: TextView = itemView.textViewKavicItemDate
         var kavicItem: KavicItem? = null
+        private val checkBoxDone: CheckBox = itemView.checkBoxDone
 
         init {
             itemView.setOnClickListener {
@@ -92,6 +93,15 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
             itemView.setOnLongClickListener { view ->
                 kavicItem?.let { itemClickListener?.onItemLongClick(adapterPosition, view, it) }
                 true
+            }
+
+            checkBoxDone.setOnClickListener {
+                if (checkBoxDone.isChecked) {
+                    timer = Timer("Navigate to next activity", false).schedule(1000) {
+                        kavicItem?.let { kavic -> itemClickListener?.checkBoxChecked(kavic) }
+                        timer.cancel()
+                    }
+                }
             }
 
         }
