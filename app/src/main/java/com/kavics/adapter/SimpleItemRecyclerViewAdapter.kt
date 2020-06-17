@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kavics.R
 import com.kavics.model.DeadlineItem
 import com.kavics.model.Item
-import com.kavics.model.KavicItem
+import com.kavics.model.OneTimeKavicItem
 import kotlinx.android.synthetic.main.deadline_item.view.*
 import kotlinx.android.synthetic.main.kavic_cardview.view.*
 import java.util.*
@@ -21,7 +21,7 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
     private lateinit var timer: TimerTask
     private val kavicList = mutableListOf<Item>()
     var itemClickListener: KavicItemClickListener? = null
-    private val dateHelper = DeadlineHelper()
+    private val dateHelper = DateHelper()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == 1) {
@@ -36,7 +36,7 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (kavicList[position] is KavicItem) {
+        return if (kavicList[position] is OneTimeKavicItem) {
             1
         } else {
             0
@@ -47,7 +47,7 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
         val kavic = kavicList[position]
 
         if (holder is KavicCardViewViewHolder) {
-            holder.kavicItem = kavic as KavicItem
+            holder.oneTimeKavicItem = kavic as OneTimeKavicItem
             holder.tvTitle.text = kavic.title
         } else if (holder is DeadlineDateViewViewHolder) {
 
@@ -70,8 +70,8 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    fun addAll(kavicItems: List<KavicItem>) {
-        val kavicsAndDates = dateHelper.getListWithDates(kavicItems)
+    fun addAll(oneTimeKavicItems: List<OneTimeKavicItem>) {
+        val kavicsAndDates = dateHelper.getListWithDates(oneTimeKavicItems)
         kavicList.clear()
         kavicList.addAll(kavicsAndDates)
         notifyDataSetChanged()
@@ -82,23 +82,29 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
     inner class KavicCardViewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val tvTitle: TextView = itemView.textViewKavicItemTitle
-        var kavicItem: KavicItem? = null
+        var oneTimeKavicItem: OneTimeKavicItem? = null
         private val checkBoxDone: CheckBox = itemView.checkBoxDone
 
         init {
             itemView.setOnClickListener {
-                kavicItem?.let { kavic -> itemClickListener?.onItemClick(kavic) }
+                oneTimeKavicItem?.let { kavic -> itemClickListener?.onItemClick(kavic) }
             }
 
             itemView.setOnLongClickListener { view ->
-                kavicItem?.let { itemClickListener?.onItemLongClick(adapterPosition, view, it) }
+                oneTimeKavicItem?.let {
+                    itemClickListener?.onItemLongClick(
+                        adapterPosition,
+                        view,
+                        it
+                    )
+                }
                 true
             }
 
             checkBoxDone.setOnClickListener {
                 if (checkBoxDone.isChecked) {
                     timer = Timer("Navigate to next activity", false).schedule(1000) {
-                        kavicItem?.let { kavic -> itemClickListener?.checkBoxChecked(kavic) }
+                        oneTimeKavicItem?.let { kavic -> itemClickListener?.checkBoxChecked(kavic) }
                         timer.cancel()
                     }
                 }

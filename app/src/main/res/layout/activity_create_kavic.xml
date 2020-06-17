@@ -81,7 +81,46 @@
         android:text="@string/every_day"
         app:layout_constraintBottom_toTopOf="@+id/textViewSelectedDate"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.141"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextKavicTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextKavicTitle"
+        app:layout_constraintVertical_bias="0.545" />
+
+    <EditText
+        android:id="@+id/editTextNumberOfRepeatingDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:clickable="false"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxDaily"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxDaily"
+        app:layout_constraintTop_toTopOf="@+id/checkBoxDaily" />
+
+    <Button
+        android:id="@+id/btnStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="16dp"
+        android:text="startDate"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDeadline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnDeadline"
+        app:layout_constraintTop_toTopOf="@+id/btnDeadline" />
+
+    <EditText
+        android:id="@+id/editTextHowManyDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/editTextNumberOfRepeatingDays"
+        app:layout_constraintStart_toStartOf="@+id/editTextNumberOfRepeatingDays"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumberOfRepeatingDays" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

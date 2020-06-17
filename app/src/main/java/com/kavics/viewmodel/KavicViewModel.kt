@@ -4,35 +4,36 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kavics.application.KavicApplication
-import com.kavics.database.Repository
-import com.kavics.model.KavicItem
+import com.kavics.database.one_time_kavics.RepositoryOneTimeKavic
+import com.kavics.model.OneTimeKavicItem
 import kotlinx.coroutines.launch
 
 class KavicViewModel : ViewModel() {
 
-    private val repository: Repository
+    private val repositoryOneTimeKavic: RepositoryOneTimeKavic
 
-    var allKavics: LiveData<List<KavicItem>>
+    var allOneTimeKavics: LiveData<List<OneTimeKavicItem>>
 
     init {
-        val kavicDao = KavicApplication.kavicDatabase.kavicDAO()
-        repository = Repository(kavicDao)
-        allKavics = repository.getAllKavics()
+        val oneTimeKavicDao = KavicApplication.kavicDatabase.oneTimeKavicDAO()
+        repositoryOneTimeKavic = RepositoryOneTimeKavic(oneTimeKavicDao)
+        allOneTimeKavics = repositoryOneTimeKavic.getAllKavics()
     }
 
-    fun insert(kavicItem: KavicItem) = viewModelScope.launch {
-        repository.insert(kavicItem)
+    fun insertOneTimeKavic(oneTimeKavicItem: OneTimeKavicItem) = viewModelScope.launch {
+        repositoryOneTimeKavic.insertOneTimeKavic(oneTimeKavicItem)
     }
 
-    fun delete(kavicItem: KavicItem) = viewModelScope.launch {
-        repository.delete(kavicItem)
+    fun deleteOneTimeKavic(oneTimeKavicItem: OneTimeKavicItem) = viewModelScope.launch {
+        repositoryOneTimeKavic.deleteOneTimeKavic(oneTimeKavicItem)
     }
 
-    fun update(kavicItem: KavicItem) = viewModelScope.launch {
-        repository.update(kavicItem)
+    fun updateOneTimeKavic(oneTimeKavicItem: OneTimeKavicItem) = viewModelScope.launch {
+        repositoryOneTimeKavic.updateOneTimeKavic(oneTimeKavicItem)
     }
 
-    fun deleteOld(today: String) {
-        repository.deleteOld(today)
+    fun setArchiveOneTimeKavic(today: String) = viewModelScope.launch {
+        repositoryOneTimeKavic.setArchiveOneTimeKavic(today)
     }
+
 }

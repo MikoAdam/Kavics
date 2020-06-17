@@ -1,10 +1,9 @@
 package com.kavics
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.kavics.model.KavicItem
+import com.kavics.model.OneTimeKavicItem
 import com.kavics.viewmodel.KavicViewModel
 import kotlinx.android.synthetic.main.activity_kavic_edit.*
 
@@ -20,7 +19,7 @@ class EditKavicActivity : AppCompatActivity() {
 
         val kavicViewModel = KavicViewModel()
 
-        val kavic = intent.getSerializableExtra(KAVIC_ITEM) as KavicItem
+        val kavic = intent.getSerializableExtra(KAVIC_ITEM) as OneTimeKavicItem
 
         editTextTextKavicTitle.setText(kavic.title)
 
@@ -28,9 +27,9 @@ class EditKavicActivity : AppCompatActivity() {
 
             if (editTextTextKavicTitle.text.toString() != "") {
                 kavic.title = editTextTextKavicTitle.text.toString()
-                kavicViewModel.update(kavic)
+                kavicViewModel.updateOneTimeKavic(kavic)
 
-                startActivity(Intent(this, MainActivity::class.java))
+                finish()
 
             } else {
                 Toast.makeText(this, "You have to fill all", Toast.LENGTH_LONG).show()

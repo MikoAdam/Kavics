@@ -6,12 +6,13 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(tableName = "kavicsDatabase")
-class KavicItem(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+class OneTimeKavicItem(
+
+    @PrimaryKey(autoGenerate = true) var id: Int = 0,
     var title: String = "",
     @ColumnInfo(name = "kavicDeadline")
     override var deadline: String = "",
-    var repeatDays: Int = 0,
-    var done: Boolean = false
+    var done: Boolean = false,
+    var isArchive: Boolean = false
+
 ) : Serializable, Item()

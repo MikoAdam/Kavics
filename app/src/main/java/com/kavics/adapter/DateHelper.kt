@@ -2,12 +2,13 @@ package com.kavics.adapter
 
 import com.kavics.model.DeadlineItem
 import com.kavics.model.Item
-import com.kavics.model.KavicItem
+import com.kavics.model.OneTimeKavicItem
+import com.kavics.model.RepeatingKavicItem
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DeadlineHelper {
+class DateHelper {
 
     fun getListWithDates(kavicItemList: List<Item>): List<Item> {
         if (!kavicItemList.isNullOrEmpty()) {
@@ -18,7 +19,7 @@ class DeadlineHelper {
             var i = 0
 
             while (i < newKavicList.size) {
-                if (newKavicList[i] is KavicItem) {
+                if (newKavicList[i] is OneTimeKavicItem) {
                     if (newKavicList[i] == newKavicList[newKavicList.size - 1]) {
 
                         val deadlineItem = DeadlineItem()
@@ -61,6 +62,19 @@ class DeadlineHelper {
         val dateFormat: DateFormat = SimpleDateFormat("yyyy MM dd", Locale.getDefault())
 
         return dateFormat.format(tomorrow)
+    }
+
+    fun dateStringToInt(date: String): Int {
+        return date.replace(" ", "").toInt()
+    }
+
+    fun equalDate(i: RepeatingKavicItem): Boolean {
+        val difference = dateStringToInt(getToday()) - dateStringToInt(i.lastDate)
+        val daysFromStartToPresence = dateStringToInt(getToday()) - dateStringToInt(i.startDate)
+        return if (getToday() <= i.lastDate && daysFromStartToPresence < i.howManyDays)
+            difference % i.repeatDays == 0
+        else
+            false
     }
 
 }
