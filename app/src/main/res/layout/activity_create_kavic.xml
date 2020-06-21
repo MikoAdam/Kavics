@@ -1,126 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="120dp"
-        android:layout_height="40dp"
+    <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/title"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/editTextKavicTitle"
+        android:ems="10"
+        android:hint="@string/title"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextKavicTitle"
-        android:layout_width="240dp"
-        android:layout_height="80dp"
-        android:autofillHints="Title of the Kavic"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textViewTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textViewTitle"
-        tools:ignore="LabelFor" />
-
-    <Button
-        android:id="@+id/btnCreateKavic"
+        android:id="@+id/editTextDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="@string/description"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTitle" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="209dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxLengthInMins">
+
+        <RadioButton
+            android:id="@+id/radioButtonOneTimeKavic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/one_time_kavic" />
+
+        <RadioButton
+            android:id="@+id/radioButtonRepeatingKavic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/repeating_kavic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/frameLayoutCreateKavic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/create"
+        app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnBack"
+        app:layout_constraintTop_toTopOf="@+id/btnBack" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnCancelCreateKavic"
+        app:layout_constraintEnd_toStartOf="@+id/btnSave"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/btnCancelCreateKavic"
+    <EditText
+        android:id="@+id/editTextLength"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btnCancel"
-        app:layout_constraintBottom_toBottomOf="@+id/btnCreateKavic"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxLengthInMins"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnCreateKavic"
-        app:layout_constraintTop_toTopOf="@+id/btnCreateKavic" />
-
-    <Button
-        android:id="@+id/btnDeadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/select_deadline"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSelectedDate"
-        app:layout_constraintVertical_bias="0.25" />
-
-    <TextView
-        android:id="@+id/textViewSelectedDate"
-        android:layout_width="219dp"
-        android:layout_height="46dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.572" />
+        app:layout_constraintStart_toEndOf="@+id/checkBoxLengthInMins"
+        app:layout_constraintTop_toTopOf="@+id/checkBoxLengthInMins" />
 
     <CheckBox
-        android:id="@+id/checkBoxDaily"
+        android:id="@+id/checkBoxLengthInMins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/every_day"
-        app:layout_constraintBottom_toTopOf="@+id/textViewSelectedDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.141"
+        android:layout_marginTop="32dp"
+        android:text="@string/length"
+        app:layout_constraintEnd_toStartOf="@+id/editTextLength"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextKavicTitle"
-        app:layout_constraintVertical_bias="0.545" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
 
-    <EditText
-        android:id="@+id/editTextNumberOfRepeatingDays"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:clickable="false"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="@+id/checkBoxDaily"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/checkBoxDaily"
-        app:layout_constraintTop_toTopOf="@+id/checkBoxDaily" />
-
-    <Button
-        android:id="@+id/btnStartDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="13dp"
-        android:layout_marginEnd="16dp"
-        android:text="startDate"
-        app:layout_constraintBottom_toBottomOf="@+id/btnDeadline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnDeadline"
-        app:layout_constraintTop_toTopOf="@+id/btnDeadline" />
-
-    <EditText
-        android:id="@+id/editTextHowManyDays"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="@+id/editTextNumberOfRepeatingDays"
-        app:layout_constraintStart_toStartOf="@+id/editTextNumberOfRepeatingDays"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberOfRepeatingDays" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

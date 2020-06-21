@@ -1,11 +1,13 @@
-package com.kavics
+package com.kavics.edit
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.kavics.R
 import com.kavics.model.OneTimeKavicItem
 import com.kavics.viewmodel.KavicViewModel
 import kotlinx.android.synthetic.main.activity_kavic_edit.*
+import kotlinx.android.synthetic.main.activity_kavic_list.*
 
 class EditKavicActivity : AppCompatActivity() {
 
@@ -16,6 +18,7 @@ class EditKavicActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kavic_edit)
+        setSupportActionBar(toolbar)
 
         val kavicViewModel = KavicViewModel()
 

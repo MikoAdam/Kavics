@@ -10,9 +10,11 @@ class OneTimeKavicItem(
 
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
     var title: String = "",
+    var description: String = "",
     @ColumnInfo(name = "kavicDeadline")
     override var deadline: String = "",
     var done: Boolean = false,
+    var howManySeconds: Int = 0,
     var isArchive: Boolean = false
 
 ) : Serializable, Item()

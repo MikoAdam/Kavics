@@ -15,6 +15,7 @@ import com.kavics.adapter.KavicItemClickListener
 import com.kavics.adapter.SimpleItemRecyclerViewAdapter
 import com.kavics.create.CreateKavicActivity
 import com.kavics.database.KavicDatabase
+import com.kavics.edit.EditKavicActivity
 import com.kavics.model.OneTimeKavicItem
 import com.kavics.viewmodel.KavicViewModel
 import kotlinx.android.synthetic.main.activity_kavic_list.*

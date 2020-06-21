@@ -12,6 +12,9 @@ import com.kavics.model.OneTimeKavicItem
 import com.kavics.model.RepeatingKavicItem
 import com.kavics.viewmodel.KavicViewModel
 import kotlinx.android.synthetic.main.activity_create_kavic.*
+import kotlinx.android.synthetic.main.activity_kavic_list.*
+import kotlinx.android.synthetic.main.fragment_create_one_time_kavic.*
+import kotlinx.android.synthetic.main.fragment_create_repeating_kavic.*
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -20,53 +23,87 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
     private lateinit var deadlineDate: String
     private lateinit var startDate: String
+    private lateinit var endDate: String
     private lateinit var database: KavicDatabase
-    private var deadlineDatePicking: Boolean = false
-    private var startDatePicking: Boolean = false
+    var deadlineDatePicking: Boolean = false
+    var startDatePicking: Boolean = false
+    var endDatePicking: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_kavic)
 
+        setSupportActionBar(toolbar)
+
+        val createOneTimeKavic = CreateOneTimeKavic()
+        val createRepeatingKavic = CreateRepeatingKavic()
+
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayoutCreateKavic, createOneTimeKavic)
+            commit()
+        }
+
+        radioGroup.setOnCheckedChangeListener { _, i ->
+            when (i) {
+                R.id.radioButtonOneTimeKavic -> {
+                    supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.frameLayoutCreateKavic, createOneTimeKavic)
+                        commit()
+                    }
+                }
+                R.id.radioButtonRepeatingKavic -> {
+                    supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.frameLayoutCreateKavic, createRepeatingKavic)
+                        commit()
+                    }
+                }
+            }
+        }
+
+
         val kavicViewModel = KavicViewModel()
         database = KavicDatabase.getDatabase(applicationContext)
 
 
-        btnDeadline.setOnClickListener {
-            deadlineDatePicking = true
-            showDatePickerDialog()
-        }
-
-        btnStartDate.setOnClickListener {
-            startDatePicking = true
-            showDatePickerDialog()
-        }
-
-        btnCreateKavic.setOnClickListener {
-
-            if (editTextKavicTitle.text.toString() != "" && this::deadlineDate.isInitialized) {
-                if (checkBoxDaily.isChecked) {
-
-                    addRepeatingKavicItem(
-                        RepeatingKavicItem(
-                            title = editTextKavicTitle.text.toString(),
-                            repeatDays = editTextNumberOfRepeatingDays.text.toString().toInt(),
-                            lastDate = deadlineDate,
-                            startDate = startDate,
-                            howManyDays = editTextHowManyDays.text.toString().toInt()
+        btnSave.setOnClickListener {
+            if (editTextTitle.text.toString() != "") {
+                if (radioButtonRepeatingKavic.isChecked) {
+                    if (this::startDate.isInitialized && this::endDate.isInitialized) {
+                        addRepeatingKavicItem(
+                            RepeatingKavicItem(
+                                title = editTextTitle.text.toString(),
+                                description = editTextDescription.text.toString(),
+                                howManySeconds = getHowManySeconds(),
+                                lastDate = deadlineDate,
+                                startDate = startDate,
+                                repeatDays = editTextNumber.text.toString().toInt()
+                            )
                         )
-                    )
+                        Toast.makeText(this, "Kavic created", Toast.LENGTH_SHORT).show()
 
-                    finish()
+                        finish()
+                    } else {
+                        Toast.makeText(this, "you have to fill everything", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
                 } else {
-                    kavicViewModel.insertOneTimeKavic(
-                        OneTimeKavicItem(
-                            title = editTextKavicTitle.text.toString(),
-                            deadline = deadlineDate
+                    if (this::deadlineDate.isInitialized) {
+                        kavicViewModel.insertOneTimeKavic(
+                            OneTimeKavicItem(
+                                title = editTextTitle.text.toString(),
+                                description = editTextDescription.text.toString(),
+                                howManySeconds = getHowManySeconds(),
+                                deadline = deadlineDate
+                            )
                         )
-                    )
+                        Toast.makeText(this, "Kavic created", Toast.LENGTH_SHORT).show()
 
-                    finish()
+                        finish()
+                    } else {
+                        Toast.makeText(this, "you have to fill everything", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
 
             } else {
@@ -74,14 +111,19 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
             }
         }
 
-        btnCancelCreateKavic.setOnClickListener {
+        btnBack.setOnClickListener {
             finish()
         }
 
-        checkBoxDaily.setOnClickListener {
-            editTextNumberOfRepeatingDays.isClickable = checkBoxDaily.isChecked
-        }
     }
+
+    private fun getHowManySeconds(): Int {
+        return if (editTextLength.text.toString() == "")
+            0
+        else
+            editTextLength.text.toString().toInt()
+    }
+
 
     private fun addRepeatingKavicItem(repeatingKavicItem: RepeatingKavicItem) = launch {
         withContext(Dispatchers.IO) {
@@ -89,7 +131,7 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         }
     }
 
-    private fun showDatePickerDialog() {
+    fun showDatePickerDialog() {
 
         val datePickerDialog = DatePickerDialog(
             this,
@@ -117,16 +159,22 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
         if (deadlineHelper.getToday() <= "$year $monthAsString $dayAsString") {
 
-            textViewSelectedDate.text =
-                getString(R.string.date_yyyy_MM_dd, year.toString(), monthAsString, dayAsString)
-
-            if (deadlineDatePicking) {
-                deadlineDate = "$year $monthAsString $dayAsString"
-                deadlineDatePicking = false
-            }
-            if (startDatePicking) {
-                startDate = "$year $monthAsString $dayAsString"
-                startDatePicking = false
+            when {
+                deadlineDatePicking -> {
+                    deadlineDate = "$year $monthAsString $dayAsString"
+                    textViewChosenDeadline.text = deadlineDate
+                    deadlineDatePicking = false
+                }
+                startDatePicking -> {
+                    startDate = "$year $monthAsString $dayAsString"
+                    textViewChosenStartDate.text = startDate
+                    startDatePicking = false
+                }
+                endDatePicking -> {
+                    endDate = "$year $monthAsString $dayAsString"
+                    textViewChosenEndDate.text = endDate
+                    startDatePicking = false
+                }
             }
 
         } else {

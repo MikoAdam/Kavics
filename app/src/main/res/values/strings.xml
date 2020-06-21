@@ -11,8 +11,19 @@
     <string name="tomorrow">Today</string>
     <string name="save">Save</string>
     <string name="title">Title:</string>
-    <string name="create">Create</string>
     <string name="select_deadline">Select deadline</string>
     <string name="every_day">Every day</string>
+
+    <string name="description">Description</string>
+    <string name="one_time_kavic">One time kavic</string>
+    <string name="repeating_kavic">Repeating kavic</string>
+    <string name="choose_deadline">Choose deadline</string>
+    <string name="how_many_minutes">How many minutes</string>
+    <string name="length">Length:</string>
+    <string name="cancel">Cancel</string>
+    <string name="create">Create</string>
+    <string name="choose_start_date">Start date</string>
+    <string name="choose_end_date">End date</string>
+    <string name="repeat_frequency_in_days">repeat frequency in days</string>
 
 </resources>

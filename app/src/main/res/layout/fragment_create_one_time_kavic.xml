@@ -4,29 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".edit.EditKavicActivity">
+    tools:context=".create.CreateOneTimeKavic">
 
 
     <Button
-        android:id="@+id/btnSaveEdit"
-        android:layout_width="200dp"
-        android:layout_height="48dp"
-        android:text="@string/save"
+        android:id="@+id/btnChooseDeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_deadline"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewChosenDeadline"
+        app:layout_constraintVertical_bias="0.498" />
+
+    <TextView
+        android:id="@+id/textViewChosenDeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextTextKavicTitle"
-        android:layout_width="200dp"
-        android:layout_height="48dp"
-        android:autofillHints="Name of the Kavic"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/btnSaveEdit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="LabelFor" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -70,8 +70,8 @@ class DateHelper {
 
     fun equalDate(i: RepeatingKavicItem): Boolean {
         val difference = dateStringToInt(getToday()) - dateStringToInt(i.lastDate)
-        val daysFromStartToPresence = dateStringToInt(getToday()) - dateStringToInt(i.startDate)
-        return if (getToday() <= i.lastDate && daysFromStartToPresence < i.howManyDays)
+        dateStringToInt(getToday()) - dateStringToInt(i.startDate)
+        return if (getToday() <= i.lastDate)
             difference % i.repeatDays == 0
         else
             false
