@@ -32,6 +32,6 @@ interface OneTimeKavicDAO {
     fun setDoneKavics(id: Int)
 
     @Query("UPDATE kavicsDatabase SET isArchive = 1 WHERE deadline <= :today")
-    fun setArchive(today: String)
+    fun setArchiveAllOfOneTimeKavics(today: String)
 
 }

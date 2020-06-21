@@ -32,8 +32,8 @@ class KavicViewModel : ViewModel() {
         repositoryOneTimeKavic.updateOneTimeKavic(oneTimeKavicItem)
     }
 
-    fun setArchiveOneTimeKavic(today: String) = viewModelScope.launch {
-        repositoryOneTimeKavic.setArchiveOneTimeKavic(today)
+    fun setArchiveAllOfOneTimeKavics(today: String) = viewModelScope.launch {
+        repositoryOneTimeKavic.setArchiveAllOfOneTimeKavics(today)
     }
 
 }

@@ -71,7 +71,7 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     fun addAll(oneTimeKavicItems: List<OneTimeKavicItem>) {
-        val kavicsAndDates = dateHelper.getListWithDates(oneTimeKavicItems)
+        val kavicsAndDates = dateHelper.getKavicListWithDeadlineItems(oneTimeKavicItems)
         kavicList.clear()
         kavicList.addAll(kavicsAndDates)
         notifyDataSetChanged()
@@ -103,7 +103,7 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
 
             checkBoxDone.setOnClickListener {
                 if (checkBoxDone.isChecked) {
-                    timer = Timer("Navigate to next activity", false).schedule(1000) {
+                    timer = Timer("Delay before kavic disappears", false).schedule(1000) {
                         oneTimeKavicItem?.let { kavic -> itemClickListener?.checkBoxChecked(kavic) }
                         timer.cancel()
                     }

@@ -10,7 +10,8 @@ import java.util.*
 
 class DateHelper {
 
-    fun getListWithDates(kavicItemList: List<Item>): List<Item> {
+    //adds the deadline items to a list of kavics
+    fun getKavicListWithDeadlineItems(kavicItemList: List<Item>): List<Item> {
         if (!kavicItemList.isNullOrEmpty()) {
 
             val newKavicList = kavicItemList.toMutableList()
@@ -64,7 +65,7 @@ class DateHelper {
         return dateFormat.format(tomorrow)
     }
 
-    fun dateStringToInt(date: String): Int {
+    private fun dateStringToInt(date: String): Int {
         return date.replace(" ", "").toInt()
     }
 

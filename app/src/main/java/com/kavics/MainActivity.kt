@@ -15,6 +15,7 @@ import com.kavics.adapter.KavicItemClickListener
 import com.kavics.adapter.SimpleItemRecyclerViewAdapter
 import com.kavics.create.CreateKavicActivity
 import com.kavics.database.KavicDatabase
+import com.kavics.detail.DetailActivity
 import com.kavics.edit.EditKavicActivity
 import com.kavics.model.OneTimeKavicItem
 import com.kavics.viewmodel.KavicViewModel
@@ -29,7 +30,6 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
     private lateinit var kavicViewModel: KavicViewModel
     private lateinit var database: KavicDatabase
 
-
     override fun onResume() {
         super.onResume()
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
         val calendar: Calendar = Calendar.getInstance()
         val today: Int = calendar.get(Calendar.DAY_OF_YEAR)
         if (today != lastTimeStarted) {
-            deleteOldKavics()
-            createRepeatingKavicsForToday()
+            archiveOldKavics()
+            addRepeatingKavicsForToday()
             val editor = settings.edit()
             editor.putInt("last_time_started", today)
             editor.apply()
@@ -66,11 +66,11 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
         setupRecyclerView()
     }
 
-    private fun deleteOldKavics() {
-        kavicViewModel.setArchiveOneTimeKavic(DateHelper().getToday())
+    private fun archiveOldKavics() {
+        kavicViewModel.setArchiveAllOfOneTimeKavics(DateHelper().getToday())
     }
 
-    private fun createRepeatingKavicsForToday() = launch {
+    private fun addRepeatingKavicsForToday() = launch {
 
         val repeatingKavics =
             withContext(Dispatchers.IO) { database.repeatingKavicItemDao().getAll() }
@@ -97,8 +97,8 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
     }
 
     override fun onItemClick(oneTimeKavicItem: OneTimeKavicItem) {
-        val intent = Intent(this, EditKavicActivity::class.java)
-        intent.putExtra(EditKavicActivity.KAVIC_ITEM, oneTimeKavicItem)
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.KAVIC_ITEM, oneTimeKavicItem)
         startActivity(intent)
     }
 
@@ -111,6 +111,12 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
         popup.inflate(R.menu.menu_kavic)
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+                R.id.edit -> {
+                    val intent = Intent(this, EditKavicActivity::class.java)
+                    intent.putExtra(EditKavicActivity.KAVIC_ITEM, oneTimeKavicItem)
+                    startActivity(intent)
+                    return@setOnMenuItemClickListener true
+                }
                 R.id.delete -> {
                     kavicViewModel.deleteOneTimeKavic(oneTimeKavicItem)
                     return@setOnMenuItemClickListener true
