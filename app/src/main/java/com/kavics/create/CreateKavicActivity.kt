@@ -74,8 +74,8 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                                 title = editTextTitle.text.toString(),
                                 description = editTextDescription.text.toString(),
                                 howManySeconds = getHowManySeconds(),
-                                lastDate = deadlineDate,
                                 startDate = startDate,
+                                lastDate = endDate,
                                 repeatDays = editTextNumber.text.toString().toInt()
                             )
                         )
