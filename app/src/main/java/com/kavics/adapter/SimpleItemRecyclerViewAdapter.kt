@@ -49,6 +49,7 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
         if (holder is KavicCardViewViewHolder) {
             holder.oneTimeKavicItem = kavic as OneTimeKavicItem
             holder.tvTitle.text = kavic.title
+            holder.checkBoxDone.isChecked = false
         } else if (holder is DeadlineDateViewViewHolder) {
 
             holder.kavicItem = kavic as DeadlineItem
@@ -79,11 +80,15 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
 
     override fun getItemCount() = kavicList.size
 
+    fun removeItem(adapterPosition: Int) {
+
+    }
+
     inner class KavicCardViewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val tvTitle: TextView = itemView.textViewKavicItemTitle
         var oneTimeKavicItem: OneTimeKavicItem? = null
-        private val checkBoxDone: CheckBox = itemView.checkBoxDone
+        val checkBoxDone: CheckBox = itemView.checkBoxDone
 
         init {
             itemView.setOnClickListener {
@@ -102,11 +107,12 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
             }
 
             checkBoxDone.setOnClickListener {
-                if (checkBoxDone.isChecked) {
-                    timer = Timer("Delay before kavic disappears", false).schedule(1000) {
-                        oneTimeKavicItem?.let { kavic -> itemClickListener?.checkBoxChecked(kavic) }
-                        timer.cancel()
-                    }
+                timer = Timer("Delay before kavic disappears", false).schedule(500) {
+                    oneTimeKavicItem?.let { kavic -> itemClickListener?.checkBoxChecked(kavic) }
+
+
+
+                    timer.cancel()
                 }
             }
 
@@ -123,4 +129,6 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
         }
 
     }
+
+
 }

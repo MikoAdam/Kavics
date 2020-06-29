@@ -10,7 +10,6 @@ data class RepeatingKavicItem(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
     var title: String = "",
     var description: String = "",
-    var howManySeconds: Int = 0,
     var repeatDays: Int = 0,
     var startDate: String = "",
     var lastDate: String = ""

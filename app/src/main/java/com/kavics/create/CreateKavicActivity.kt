@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.kavics.R
 import com.kavics.adapter.DateHelper
 import com.kavics.database.KavicDatabase
@@ -61,7 +62,7 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         }
 
 
-        val kavicViewModel = KavicViewModel()
+        val kavicViewModel = ViewModelProvider(this).get(KavicViewModel::class.java)
         database = KavicDatabase.getDatabase(applicationContext)
 
 
@@ -73,7 +74,6 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                             RepeatingKavicItem(
                                 title = editTextTitle.text.toString(),
                                 description = editTextDescription.text.toString(),
-                                howManySeconds = getHowManySeconds(),
                                 startDate = startDate,
                                 lastDate = endDate,
                                 repeatDays = editTextNumber.text.toString().toInt()
@@ -93,7 +93,6 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                             OneTimeKavicItem(
                                 title = editTextTitle.text.toString(),
                                 description = editTextDescription.text.toString(),
-                                howManySeconds = getHowManySeconds(),
                                 deadline = deadlineDate
                             )
                         )
@@ -116,14 +115,6 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         }
 
     }
-
-    private fun getHowManySeconds(): Int {
-        return if (editTextLength.text.toString() == "")
-            0
-        else
-            editTextLength.text.toString().toInt()
-    }
-
 
     private fun addRepeatingKavicItem(repeatingKavicItem: RepeatingKavicItem) = launch {
         withContext(Dispatchers.IO) {

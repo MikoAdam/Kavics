@@ -38,7 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxLengthInMins">
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription">
 
         <RadioButton
             android:id="@+id/radioButtonOneTimeKavic"
@@ -91,30 +91,6 @@
         app:layout_constraintEnd_toStartOf="@+id/btnSave"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextLength"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="@+id/checkBoxLengthInMins"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/checkBoxLengthInMins"
-        app:layout_constraintTop_toTopOf="@+id/checkBoxLengthInMins" />
-
-    <CheckBox
-        android:id="@+id/checkBoxLengthInMins"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/length"
-        app:layout_constraintEnd_toStartOf="@+id/editTextLength"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

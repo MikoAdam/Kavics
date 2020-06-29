@@ -14,7 +14,6 @@ class OneTimeKavicItem(
     @ColumnInfo(name = "kavicDeadline")
     override var deadline: String = "",
     var done: Boolean = false,
-    var howManySeconds: Int = 0,
     var isArchive: Boolean = false
 
 ) : Serializable, Item()

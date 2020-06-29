@@ -3,6 +3,7 @@ package com.kavics.edit
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.kavics.R
 import com.kavics.model.OneTimeKavicItem
 import com.kavics.viewmodel.KavicViewModel
@@ -20,8 +21,7 @@ class EditKavicActivity : AppCompatActivity() {
         setContentView(R.layout.activity_kavic_edit)
         setSupportActionBar(toolbar)
 
-        val kavicViewModel = KavicViewModel()
-
+        val kavicViewModel = ViewModelProvider(this).get(KavicViewModel::class.java)
         val kavic = intent.getSerializableExtra(KAVIC_ITEM) as OneTimeKavicItem
 
         editTextTextKavicTitle.setText(kavic.title)

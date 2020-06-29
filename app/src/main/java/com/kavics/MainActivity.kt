@@ -5,17 +5,18 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.preference.PreferenceManager
+import com.google.android.material.snackbar.Snackbar
 import com.kavics.adapter.DateHelper
 import com.kavics.adapter.KavicItemClickListener
 import com.kavics.adapter.SimpleItemRecyclerViewAdapter
 import com.kavics.create.CreateKavicActivity
 import com.kavics.database.KavicDatabase
-import com.kavics.detail.DetailActivity
 import com.kavics.edit.EditKavicActivity
 import com.kavics.model.OneTimeKavicItem
 import com.kavics.viewmodel.KavicViewModel
@@ -32,13 +33,15 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
 
     override fun onResume() {
         super.onResume()
+
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
         val lastTimeStarted = settings.getInt("last_time_started", -1)
-        val calendar: Calendar = Calendar.getInstance()
-        val today: Int = calendar.get(Calendar.DAY_OF_YEAR)
+        val today = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
         if (today != lastTimeStarted) {
+
             archiveOldKavics()
             addRepeatingKavicsForToday()
+
             val editor = settings.edit()
             editor.putInt("last_time_started", today)
             editor.apply()
@@ -97,9 +100,7 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
     }
 
     override fun onItemClick(oneTimeKavicItem: OneTimeKavicItem) {
-        val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(DetailActivity.KAVIC_ITEM, oneTimeKavicItem)
-        startActivity(intent)
+        //i haven't decided yet what to have here
     }
 
     override fun onItemLongClick(
@@ -118,7 +119,7 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
                     return@setOnMenuItemClickListener true
                 }
                 R.id.delete -> {
-                    kavicViewModel.deleteOneTimeKavic(oneTimeKavicItem)
+                    deleteKavic(oneTimeKavicItem)
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -128,8 +129,36 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
         return false
     }
 
+    private fun deleteKavic(oneTimeKavicItem: OneTimeKavicItem) {
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Delete")
+        builder.setMessage("Do you want to delete this Kavic?")
+
+        builder.setPositiveButton(android.R.string.yes) { _, _ ->
+            kavicViewModel.deleteOneTimeKavic(oneTimeKavicItem)
+        }
+
+        builder.setNegativeButton(android.R.string.no) { _, _ -> }
+        builder.show()
+    }
+
     override fun checkBoxChecked(oneTimeKavicItem: OneTimeKavicItem) {
+
+        Snackbar.make(
+            findViewById(R.id.mCoordinatorlayout),
+            "Undo kavic done action",
+            Snackbar.LENGTH_SHORT
+        )
+            .setAction("Undo") { redoDone(oneTimeKavicItem) }
+            .show()
+
         oneTimeKavicItem.done = true
+        kavicViewModel.updateOneTimeKavic(oneTimeKavicItem)
+    }
+
+    private fun redoDone(oneTimeKavicItem: OneTimeKavicItem) {
+        oneTimeKavicItem.done = false
         kavicViewModel.updateOneTimeKavic(oneTimeKavicItem)
     }
 
