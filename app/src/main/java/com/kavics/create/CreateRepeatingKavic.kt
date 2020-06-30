@@ -14,11 +14,15 @@ class CreateRepeatingKavic : Fragment(R.layout.fragment_create_repeating_kavic) 
         val createActivity = activity as CreateKavicActivity
 
         btnChooseStartDate.setOnClickListener {
+            createActivity.deadlineDatePicking = false
+            createActivity.endDatePicking = false
             createActivity.startDatePicking = true
             createActivity.showDatePickerDialog()
         }
 
         btnChooseEndDate.setOnClickListener {
+            createActivity.deadlineDatePicking = false
+            createActivity.startDatePicking = false
             createActivity.endDatePicking = true
             createActivity.showDatePickerDialog()
         }

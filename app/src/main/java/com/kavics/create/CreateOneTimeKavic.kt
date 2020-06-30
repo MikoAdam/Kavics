@@ -14,6 +14,8 @@ class CreateOneTimeKavic : Fragment(R.layout.fragment_create_one_time_kavic) {
         val createActivity = activity as CreateKavicActivity
 
         btnChooseDeadline.setOnClickListener {
+            createActivity.startDatePicking = false
+            createActivity.endDatePicking = false
             createActivity.deadlineDatePicking = true
             createActivity.showDatePickerDialog()
         }

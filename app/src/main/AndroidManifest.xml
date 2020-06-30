@@ -13,7 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".detail.DetailActivity"></activity>
         <activity android:name=".edit.EditKavicActivity" />
         <activity android:name=".create.CreateKavicActivity" />
         <activity

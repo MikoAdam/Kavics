@@ -1,5 +1,6 @@
 package com.kavics.adapter
 
+import android.annotation.SuppressLint
 import com.kavics.model.DeadlineItem
 import com.kavics.model.Item
 import com.kavics.model.OneTimeKavicItem
@@ -44,11 +45,12 @@ class DateHelper {
         return kavicItemList
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun getToday(): String {
         val calendar = Calendar.getInstance()
         val today = calendar.time
 
-        val dateFormat: DateFormat = SimpleDateFormat("yyyy MM dd", Locale.getDefault())
+        val dateFormat: DateFormat = SimpleDateFormat("yyyy MM dd")
 
         return dateFormat.format(today)
 
@@ -63,6 +65,18 @@ class DateHelper {
         val dateFormat: DateFormat = SimpleDateFormat("yyyy MM dd", Locale.getDefault())
 
         return dateFormat.format(tomorrow)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getDateDifference(dateAsString: String, frequency: Int): Int {
+
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        val date = format.parse(dateAsString)
+
+
+
+
+        return 0
     }
 
     private fun dateStringToInt(date: String): Int {
