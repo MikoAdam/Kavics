@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_kavic_list.*
 import kotlinx.android.synthetic.main.fragment_create_one_time_kavic.*
 import kotlinx.android.synthetic.main.fragment_create_repeating_kavic.*
 import kotlinx.coroutines.*
+import java.lang.Integer.parseInt
 import java.util.*
 
 class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
@@ -60,9 +61,16 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
     private fun initializeCreateButton() {
         btnSave.setOnClickListener {
-            if (editTextTitle.text.toString() != "") {
+
+            if (editTextTitle.text.isNullOrBlank()) {
+                editTextTitle.requestFocus()
+                editTextTitle.error = "Please type a title"
+            } else {
                 if (radioButtonRepeatingKavic.isChecked) {
-                    if (this::startDate.isInitialized && this::endDate.isInitialized) {
+                    if (this::startDate.isInitialized && this::endDate.isInitialized && isNumber(
+                            editTextHowManyDays.text.toString()
+                        )
+                    ) {
                         createRepeatingKavic()
                         Toast.makeText(this, "Kavic created", Toast.LENGTH_SHORT).show()
                         finish()
@@ -80,10 +88,19 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                         .show()
                 }
 
-            } else {
-                Toast.makeText(this, "You have to fill everything\"", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun isNumber(string: String): Boolean {
+        try {
+            parseInt(string)
+        } catch (e: NumberFormatException) {
+            editTextHowManyDays.requestFocus()
+            editTextHowManyDays.error = "Please type frequency"
+            return false
+        }
+        return true
     }
 
     private fun createOneTimeKavic() {
@@ -105,7 +122,7 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                 description = editTextDescription.text.toString(),
                 startDate = startDate,
                 lastDate = endDate,
-                repeatDays = editTextNumber.text.toString().toInt()
+                repeatDays = editTextHowManyDays.text.toString().toInt()
             )
         )
     }
