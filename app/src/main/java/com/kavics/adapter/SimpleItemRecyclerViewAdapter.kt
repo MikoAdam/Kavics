@@ -80,10 +80,6 @@ class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
 
     override fun getItemCount() = kavicList.size
 
-    fun removeItem(adapterPosition: Int) {
-
-    }
-
     inner class KavicCardViewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val tvTitle: TextView = itemView.textViewKavicItemTitle

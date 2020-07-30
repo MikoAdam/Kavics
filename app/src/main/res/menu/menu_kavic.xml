@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/edit"
-        android:title="EDIT"
-        app:showAsAction="always" />
+        android:id="@+id/editKavic"
+        android:title="@string/edit_kavic"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/delete"
-        android:title="DELETE"
+        android:title="@string/delete"
         app:showAsAction="always" />
     <item
         android:id="@+id/back"
-        android:title="BACK"
+        android:title="@string/back"
         app:showAsAction="always" />
 </menu>

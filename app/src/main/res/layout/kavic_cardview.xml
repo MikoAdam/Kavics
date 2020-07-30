@@ -19,7 +19,7 @@
             android:id="@+id/checkBoxDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:scaleX="1.8"
             android:scaleY="1.8" />
 
@@ -27,7 +27,7 @@
             android:id="@+id/textViewKavicItemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:textSize="16sp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

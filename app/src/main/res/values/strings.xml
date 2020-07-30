@@ -2,7 +2,6 @@
     <string name="app_name">Kavics</string>
     <string name="title_kavic_list">Kavics</string>
     <string name="title_kavic_detail">Kavic Detail</string>
-    <string name="itemCreateKavic">itemCreateKavic</string>
     <string name="btnCancel">Cancel</string>
 
     <string name="date_yyyy_MM_dd">%s %s %s</string>
@@ -26,5 +25,10 @@
     <string name="choose_end_date">End date</string>
     <string name="repeat_frequency_in_days">repeat frequency in days</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete">Delete</string>
+    <string name="back">Back</string>
+    <string name="edit_kavic">Edit Kavic</string>
+    <string name="archive">Archive</string>
+    <string name="repeating_kavics">Repeating Kavics</string>
 
 </resources>

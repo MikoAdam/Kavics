@@ -67,27 +67,15 @@ class DateHelper {
         return dateFormat.format(tomorrow)
     }
 
-    @SuppressLint("SimpleDateFormat")
-    fun getDateDifference(dateAsString: String, frequency: Int): Int {
-
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        val date = format.parse(dateAsString)
-
-
-
-
-        return 0
-    }
-
     private fun dateStringToInt(date: String): Int {
         return date.replace(" ", "").toInt()
     }
 
-    fun equalDate(i: RepeatingKavicItem): Boolean {
-        val difference = dateStringToInt(getToday()) - dateStringToInt(i.lastDate)
-        dateStringToInt(getToday()) - dateStringToInt(i.startDate)
-        return if (getToday() <= i.lastDate)
-            difference % i.repeatDays == 0
+    fun equalDate(repeatingKavicItem: RepeatingKavicItem): Boolean {
+        val difference = dateStringToInt(getToday()) - dateStringToInt(repeatingKavicItem.lastDate)
+        dateStringToInt(getToday()) - dateStringToInt(repeatingKavicItem.startDate)
+        return if (getToday() <= repeatingKavicItem.lastDate)
+            difference % repeatingKavicItem.repeatDays == 0
         else
             false
     }
