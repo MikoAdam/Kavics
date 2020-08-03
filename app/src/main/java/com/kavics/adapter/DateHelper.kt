@@ -13,36 +13,62 @@ class DateHelper {
 
     //adds the deadline items to a list of kavics
     fun getKavicListWithDeadlineItems(kavicItemList: List<Item>): List<Item> {
+
         if (!kavicItemList.isNullOrEmpty()) {
 
             val newKavicList = kavicItemList.toMutableList()
             newKavicList.removeAll { it is DeadlineItem }
 
-            var i = 0
+            var kavicCounter = 0
+            var howManyMinutesSum = 0
 
-            while (i < newKavicList.size) {
-                if (newKavicList[i] is OneTimeKavicItem) {
-                    if (newKavicList[i] == newKavicList[newKavicList.size - 1]) {
+            while (kavicCounter < newKavicList.size) {
 
-                        val deadlineItem = DeadlineItem()
-                        deadlineItem.deadline = newKavicList[i].deadline
-                        newKavicList.add(i + 1, deadlineItem)
-                        i++
+                if (newKavicList[kavicCounter] is OneTimeKavicItem) {
 
-                    } else if (newKavicList[i].deadline != newKavicList[i + 1].deadline) {
+                    howManyMinutesSum += newKavicList[kavicCounter].howManyMinutes
+
+                    if (newKavicList[kavicCounter] == newKavicList[newKavicList.size - 1]) {
 
                         val deadlineItem = DeadlineItem()
-                        deadlineItem.deadline = newKavicList[i].deadline
-                        newKavicList.add(i + 1, deadlineItem)
-                        i++
+                        howManyMinutesSum = setHowManyMinutesSum(deadlineItem, howManyMinutesSum)
+                        kavicCounter = setDeadlineValue(deadlineItem, newKavicList, kavicCounter)
+
+                    } else if (newKavicList[kavicCounter].deadline != newKavicList[kavicCounter + 1].deadline) {
+
+                        val deadlineItem = DeadlineItem()
+                        howManyMinutesSum = setHowManyMinutesSum(deadlineItem, howManyMinutesSum)
+                        kavicCounter = setDeadlineValue(deadlineItem, newKavicList, kavicCounter)
                     }
                 }
-                i++
+                kavicCounter++
             }
             return newKavicList
         }
 
         return kavicItemList
+    }
+
+    private fun setDeadlineValue(
+        deadlineItem: DeadlineItem,
+        newKavicList: MutableList<Item>,
+        kavicCounter: Int
+    ): Int {
+        var kavicCounter1 = kavicCounter
+        deadlineItem.deadline = newKavicList[kavicCounter1].deadline
+        newKavicList.add(kavicCounter1 + 1, deadlineItem)
+        kavicCounter1++
+        return kavicCounter1
+    }
+
+    private fun setHowManyMinutesSum(
+        deadlineItem: DeadlineItem,
+        howManyMinutesSum: Int
+    ): Int {
+        var howManyMinutesSum1 = howManyMinutesSum
+        deadlineItem.howManyMinutes = howManyMinutesSum1
+        howManyMinutesSum1 = 0
+        return howManyMinutesSum1
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -72,12 +98,14 @@ class DateHelper {
     }
 
     fun equalDate(repeatingKavicItem: RepeatingKavicItem): Boolean {
+
         val difference = dateStringToInt(getToday()) - dateStringToInt(repeatingKavicItem.lastDate)
-        dateStringToInt(getToday()) - dateStringToInt(repeatingKavicItem.startDate)
+
         return if (getToday() <= repeatingKavicItem.lastDate)
             difference % repeatingKavicItem.repeatDays == 0
         else
             false
+
     }
 
 }

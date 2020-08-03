@@ -13,6 +13,8 @@ class OneTimeKavicItem(
     var description: String = "",
     @ColumnInfo(name = "kavicDeadline")
     override var deadline: String = "",
+    @ColumnInfo(name = "kavicHowManyMinutes")
+    override var howManyMinutes: Int = 0,
     var done: Boolean = false,
     var isArchive: Boolean = false
 

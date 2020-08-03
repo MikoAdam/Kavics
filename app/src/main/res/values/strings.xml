@@ -31,4 +31,7 @@
     <string name="archive">Archive</string>
     <string name="repeating_kavics">Repeating Kavics</string>
 
+    <string name="display_mins"> %$ mins</string>
+
+
 </resources>

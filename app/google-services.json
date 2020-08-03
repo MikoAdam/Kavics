@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "884201183679",
+    "firebase_url": "https://kavics-3178f.firebaseio.com",
+    "project_id": "kavics-3178f",
+    "storage_bucket": "kavics-3178f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884201183679:android:2bbea7a20764289341690a",
+        "android_client_info": {
+          "package_name": "com.kavics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "884201183679-53mh7ic680atkebd4m5lcv8153smpsl4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANKrIEsIpmZWFr6HIop6iLTUQVmQnw9Mw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "884201183679-53mh7ic680atkebd4m5lcv8153smpsl4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

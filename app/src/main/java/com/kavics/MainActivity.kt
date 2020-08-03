@@ -31,9 +31,28 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
     private lateinit var kavicViewModel: KavicViewModel
     private lateinit var database: KavicDatabase
 
-    override fun onResume() {
-        super.onResume()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_kavic_list)
 
+        toolbar.title = "Kavics"
+
+        database = KavicDatabase.getDatabase(applicationContext)
+
+        fab.setOnClickListener {
+            startActivity(Intent(this, CreateKavicActivity::class.java))
+        }
+
+        kavicViewModel = ViewModelProvider(this).get(KavicViewModel::class.java)
+        kavicViewModel.allOneTimeKavics.observe(this) { kavic ->
+            simpleItemRecyclerViewAdapter.addAll(kavic.sortedBy { it.deadline })
+        }
+
+        checkNewDay()
+        setupRecyclerView()
+    }
+
+    private fun checkNewDay() {
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
         val lastTimeStarted = settings.getInt("last_time_started", -1)
         val today = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
@@ -47,27 +66,6 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
             editor.putInt("last_time_started", today)
             editor.apply()
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_kavic_list)
-
-        setSupportActionBar(toolbar)
-        toolbar.title = title
-
-        database = KavicDatabase.getDatabase(applicationContext)
-
-        fab.setOnClickListener {
-            startActivity(Intent(this, CreateKavicActivity::class.java))
-        }
-
-        kavicViewModel = ViewModelProvider(this).get(KavicViewModel::class.java)
-        kavicViewModel.allOneTimeKavics.observe(this) { kavic ->
-            simpleItemRecyclerViewAdapter.addAll(kavic.sortedBy { it.deadline })
-        }
-
-        setupRecyclerView()
     }
 
     private fun archiveOldKavics() {
@@ -94,7 +92,7 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
     }
 
     private fun setupRecyclerView() {
-        simpleItemRecyclerViewAdapter = SimpleItemRecyclerViewAdapter()
+        simpleItemRecyclerViewAdapter = SimpleItemRecyclerViewAdapter(this)
         simpleItemRecyclerViewAdapter.itemClickListener = this
         kavic_list.adapter = simpleItemRecyclerViewAdapter
     }

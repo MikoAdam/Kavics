@@ -39,8 +39,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:backgroundTint="#FFC107"
+        android:backgroundTint="@color/facColor"
         android:src="@drawable/ic_add_white"
+        app:borderWidth="0dp"
         app:maxImageSize="40dp" />
 
 

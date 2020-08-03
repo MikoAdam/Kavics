@@ -3,6 +3,7 @@ package com.kavics.database.one_time_kavics
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.kavics.model.OneTimeKavicItem
+import com.kavics.model.RepeatingKavicItem
 
 @Dao
 interface OneTimeKavicDAO {
@@ -33,5 +34,18 @@ interface OneTimeKavicDAO {
 
     @Query("UPDATE kavicsDatabase SET isArchive = 1 WHERE deadline < :today")
     fun setArchiveAllOfOneTimeKavics(today: String)
+
+
+    @Query("SELECT * FROM repeatingKavicsDatabase")
+    suspend fun getAll(): List<RepeatingKavicItem>
+
+    @Insert
+    suspend fun insert(repeatingKavicItem: RepeatingKavicItem)
+
+    @Update
+    suspend fun update(repeatingKavicItem: RepeatingKavicItem)
+
+    @Delete
+    suspend fun delete(repeatingKavicItem: RepeatingKavicItem)
 
 }

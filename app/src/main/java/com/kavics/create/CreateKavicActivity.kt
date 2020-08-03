@@ -108,9 +108,18 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
             OneTimeKavicItem(
                 title = editTextTitle.text.toString(),
                 description = editTextDescription.text.toString(),
-                deadline = deadlineDate
+                deadline = deadlineDate,
+                howManyMinutes = getHowManyMinutes()
             )
         )
+    }
+
+    private fun getHowManyMinutes(): Int {
+        return if (editTextHowManyMinutes.text.toString().toIntOrNull() == null) {
+            0
+        } else {
+            editTextHowManyMinutes.text.toString().toInt()
+        }
     }
 
     private fun createRepeatingKavic() {
@@ -122,7 +131,8 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                 description = editTextDescription.text.toString(),
                 startDate = startDate,
                 lastDate = endDate,
-                repeatDays = editTextHowManyDays.text.toString().toInt()
+                repeatDays = editTextHowManyDays.text.toString().toInt(),
+                howManyMinutes = editTextHowManyMinutes.text.toString().toInt()
             )
         )
     }

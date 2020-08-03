@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="cardBackground">#CBDCF7</color>
+
+    <color name="colorPrimary">#6F3EB1</color>
+    <color name="colorPrimaryDark">#502973</color>
+    <color name="colorAccent">#AA00FF</color>
+    <color name="cardBackground">#F5EFFF</color>
+
+    <color name="deadlineToday">#F3374D</color>
+    <color name="deadlineTomorrow">#FFFF4F</color>
+    <color name="deadlineLater">#84FF42</color>
+
+    <color name="facColor">#FF6E40</color>
+
 </resources>
