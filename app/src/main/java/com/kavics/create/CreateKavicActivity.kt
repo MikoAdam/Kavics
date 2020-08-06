@@ -120,7 +120,9 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     }
 
     private fun createRepeatingKavic() {
-        addIfRepeatingKavicStartsToday()
+        val dateHelper = DateHelper()
+        if (startDate == dateHelper.getToday())
+            addIfRepeatingKavicStartsToday()
 
         addRepeatingKavicItem(
             RepeatingKavicItem(
