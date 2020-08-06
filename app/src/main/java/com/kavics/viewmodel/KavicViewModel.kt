@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kavics.application.KavicApplication
-import com.kavics.database.one_time_kavics.RepositoryOneTimeKavic
+import com.kavics.database.RepositoryOneTimeKavic
 import com.kavics.model.OneTimeKavicItem
+import com.kavics.model.RepeatingKavicItem
 import kotlinx.coroutines.launch
 
 class KavicViewModel : ViewModel() {
@@ -13,11 +14,16 @@ class KavicViewModel : ViewModel() {
     private val repositoryOneTimeKavic: RepositoryOneTimeKavic
 
     var allOneTimeKavics: LiveData<List<OneTimeKavicItem>>
+    var allArchiveOneTimeKavics: LiveData<List<OneTimeKavicItem>>
 
     init {
-        val oneTimeKavicDao = KavicApplication.kavicDatabase.oneTimeKavicDAO()
-        repositoryOneTimeKavic = RepositoryOneTimeKavic(oneTimeKavicDao)
+        val oneTimeKavicDao = KavicApplication.kavicDatabase.kavicDAO()
+        repositoryOneTimeKavic =
+            RepositoryOneTimeKavic(oneTimeKavicDao)
         allOneTimeKavics = repositoryOneTimeKavic.getAllKavics()
+
+        allArchiveOneTimeKavics = repositoryOneTimeKavic.getAllArchiveKavics()
+
     }
 
     fun insertOneTimeKavic(oneTimeKavicItem: OneTimeKavicItem) = viewModelScope.launch {
@@ -34,6 +40,10 @@ class KavicViewModel : ViewModel() {
 
     fun setArchiveAllOfOneTimeKavics(today: String) = viewModelScope.launch {
         repositoryOneTimeKavic.setArchiveAllOfOneTimeKavics(today)
+    }
+
+    fun insertRepeatingKavic(repeatingKavicItem: RepeatingKavicItem) = viewModelScope.launch {
+        repositoryOneTimeKavic.insertRepeatingKavic(repeatingKavicItem)
     }
 
 }

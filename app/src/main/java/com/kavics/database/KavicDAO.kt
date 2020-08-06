@@ -1,4 +1,4 @@
-package com.kavics.database.one_time_kavics
+package com.kavics.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -6,7 +6,7 @@ import com.kavics.model.OneTimeKavicItem
 import com.kavics.model.RepeatingKavicItem
 
 @Dao
-interface OneTimeKavicDAO {
+interface KavicDAO {
 
     @Insert
     fun insert(oneTimeKavicItem: OneTimeKavicItem)
@@ -19,6 +19,9 @@ interface OneTimeKavicDAO {
 
     @Query("SELECT * FROM kavicsDatabase ORDER BY deadline")
     fun getKavicsAll(): LiveData<List<OneTimeKavicItem>>
+
+    @Query("SELECT * FROM kavicsDatabase WHERE done = 0 AND isArchive = 1")
+    fun getArchiveKavics(): LiveData<List<OneTimeKavicItem>>
 
     @Query("SELECT * FROM kavicsDatabase WHERE done = 0 AND isArchive = 0")
     fun getKavics(): LiveData<List<OneTimeKavicItem>>
@@ -35,9 +38,8 @@ interface OneTimeKavicDAO {
     @Query("UPDATE kavicsDatabase SET isArchive = 1 WHERE deadline < :today")
     fun setArchiveAllOfOneTimeKavics(today: String)
 
-
     @Query("SELECT * FROM repeatingKavicsDatabase")
-    suspend fun getAll(): List<RepeatingKavicItem>
+    suspend fun getAllRepeatingKavics(): List<RepeatingKavicItem>
 
     @Insert
     suspend fun insert(repeatingKavicItem: RepeatingKavicItem)
@@ -47,5 +49,6 @@ interface OneTimeKavicDAO {
 
     @Delete
     suspend fun delete(repeatingKavicItem: RepeatingKavicItem)
+
 
 }

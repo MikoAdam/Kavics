@@ -15,41 +15,76 @@ import com.google.android.material.snackbar.Snackbar
 import com.kavics.adapter.DateHelper
 import com.kavics.adapter.KavicItemClickListener
 import com.kavics.adapter.SimpleItemRecyclerViewAdapter
+import com.kavics.application.KavicApplication
 import com.kavics.create.CreateKavicActivity
-import com.kavics.database.KavicDatabase
 import com.kavics.edit.EditKavicActivity
 import com.kavics.model.OneTimeKavicItem
 import com.kavics.viewmodel.KavicViewModel
 import kotlinx.android.synthetic.main.activity_kavic_list.*
 import kotlinx.android.synthetic.main.kavic_list.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope by MainScope() {
 
     private lateinit var simpleItemRecyclerViewAdapter: SimpleItemRecyclerViewAdapter
     private lateinit var kavicViewModel: KavicViewModel
-    private lateinit var database: KavicDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kavic_list)
 
         toolbar.title = "Kavics"
+        toolbar.inflateMenu(R.menu.main_menu)
 
-        database = KavicDatabase.getDatabase(applicationContext)
+        toolbar.setOnMenuItemClickListener(
+
+            fun(menuItem: MenuItem?): Boolean {
+
+                if (menuItem != null) {
+                    when (menuItem.itemId) {
+                        R.id.archive -> {
+                            observeArchivedKavicsWithRecyclerView()
+                            setupRecyclerView()
+                        }
+                        R.id.repeating_kavics -> {
+
+                        }
+
+                        else -> super.onOptionsItemSelected(menuItem)
+                    }
+                }
+
+                return true
+
+            }
+        )
 
         fab.setOnClickListener {
             startActivity(Intent(this, CreateKavicActivity::class.java))
         }
 
         kavicViewModel = ViewModelProvider(this).get(KavicViewModel::class.java)
-        kavicViewModel.allOneTimeKavics.observe(this) { kavic ->
-            simpleItemRecyclerViewAdapter.addAll(kavic.sortedBy { it.deadline })
-        }
+
+        observeKavicsWithRecyclerView()
 
         checkNewDay()
         setupRecyclerView()
+    }
+
+    private fun observeKavicsWithRecyclerView() {
+        kavicViewModel.allOneTimeKavics.observe(this) { kavic ->
+            simpleItemRecyclerViewAdapter.addAll(kavic.sortedBy { it.deadline })
+        }
+    }
+
+    private fun observeArchivedKavicsWithRecyclerView() {
+        kavicViewModel.allArchiveOneTimeKavics.observe(this) { kavic ->
+            simpleItemRecyclerViewAdapter.addAll(kavic.sortedBy { it.deadline })
+        }
     }
 
     private fun checkNewDay() {
@@ -60,7 +95,10 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
         if (today != lastTimeStarted) {
 
             archiveOldKavics()
-            addRepeatingKavicsForToday()
+
+            MainScope().launch {
+                addRepeatingKavicsForToday()
+            }
 
             val editor = settings.edit()
             editor.putInt("last_time_started", today)
@@ -72,23 +110,27 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
         kavicViewModel.setArchiveAllOfOneTimeKavics(DateHelper().getToday())
     }
 
-    private fun addRepeatingKavicsForToday() = launch {
-        val repeatingKavics =
-            withContext(Dispatchers.IO) { database.repeatingKavicItemDao().getAll() }
+    private suspend fun addRepeatingKavicsForToday() = coroutineScope {
+        launch {
 
-        val dateHelper = DateHelper()
+            val repeatingKavics = KavicApplication.kavicDatabase.kavicDAO().getAllRepeatingKavics()
 
-        for (i in repeatingKavics) {
-            if (dateHelper.equalDate(i)) {
-                kavicViewModel.insertOneTimeKavic(
-                    OneTimeKavicItem(
-                        title = i.title,
-                        deadline = dateHelper.getToday()
+            val dateHelper = DateHelper()
+
+            for (i in repeatingKavics) {
+                if (dateHelper.equalDate(i)) {
+                    kavicViewModel.insertOneTimeKavic(
+                        OneTimeKavicItem(
+                            title = i.title,
+                            description = i.description,
+                            deadline = dateHelper.getToday(),
+                            howManyMinutes = i.howManyMinutes
+                        )
                     )
-                )
+                }
             }
-        }
 
+        }
     }
 
     private fun setupRecyclerView() {
@@ -140,7 +182,7 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
         builder.show()
     }
 
-    override fun checkBoxChecked(oneTimeKavicItem: OneTimeKavicItem) {
+    override fun checkBoxCheckedPopUp(oneTimeKavicItem: OneTimeKavicItem) {
         Snackbar.make(
             findViewById(R.id.mCoordinatorlayout),
             "Undo kavic done action",
@@ -158,13 +200,24 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
         kavicViewModel.updateOneTimeKavic(oneTimeKavicItem)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_list, menu)
-        return super.onCreateOptionsMenu(menu)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return false
+    override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+            R.id.archive -> {
+                observeArchivedKavicsWithRecyclerView()
+                setupRecyclerView()
+                true
+            }
+            R.id.repeating_kavics -> {
+                true
+            }
+
+            else -> super.onOptionsItemSelected(menuItem)
+        }
     }
 
 }

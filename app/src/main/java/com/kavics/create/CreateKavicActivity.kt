@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.kavics.R
 import com.kavics.adapter.DateHelper
-import com.kavics.database.KavicDatabase
 import com.kavics.model.OneTimeKavicItem
 import com.kavics.model.RepeatingKavicItem
 import com.kavics.viewmodel.KavicViewModel
@@ -26,7 +25,6 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     private lateinit var deadlineDate: String
     private lateinit var startDate: String
     private lateinit var endDate: String
-    private lateinit var database: KavicDatabase
     private lateinit var kavicViewModel: KavicViewModel
     var deadlineDatePicking: Boolean = false
     var startDatePicking: Boolean = false
@@ -49,7 +47,6 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         initializeRadioButtonListener(createOneTimeKavic, createRepeatingKavic)
 
         kavicViewModel = ViewModelProvider(this).get(KavicViewModel::class.java)
-        database = KavicDatabase.getDatabase(applicationContext)
 
         initializeCreateButton()
 
@@ -132,17 +129,19 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                 startDate = startDate,
                 lastDate = endDate,
                 repeatDays = editTextHowManyDays.text.toString().toInt(),
-                howManyMinutes = editTextHowManyMinutes.text.toString().toInt()
+                howManyMinutes = getHowManyMinutes()
             )
         )
     }
 
     private fun addIfRepeatingKavicStartsToday() {
+        val dateHelper = DateHelper()
         kavicViewModel.insertOneTimeKavic(
             OneTimeKavicItem(
                 title = editTextTitle.text.toString(),
                 description = editTextDescription.text.toString(),
-                deadline = startDate
+                deadline = dateHelper.getToday(),
+                howManyMinutes = getHowManyMinutes()
             )
         )
     }
@@ -172,7 +171,7 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
     private fun addRepeatingKavicItem(repeatingKavicItem: RepeatingKavicItem) = launch {
         withContext(Dispatchers.IO) {
-            database.repeatingKavicItemDao().insert(repeatingKavicItem)
+            kavicViewModel.insertRepeatingKavic(repeatingKavicItem)
         }
     }
 

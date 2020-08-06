@@ -128,7 +128,7 @@ class SimpleItemRecyclerViewAdapter(val context: Context) :
 
             checkBoxDone.setOnClickListener {
                 timer = Timer("Delay before kavic disappears", false).schedule(500) {
-                    oneTimeKavicItem?.let { kavic -> itemClickListener?.checkBoxChecked(kavic) }
+                    oneTimeKavicItem?.let { kavic -> itemClickListener?.checkBoxCheckedPopUp(kavic) }
 
 
 

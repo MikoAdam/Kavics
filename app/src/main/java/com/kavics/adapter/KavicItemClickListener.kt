@@ -6,5 +6,5 @@ import com.kavics.model.OneTimeKavicItem
 interface KavicItemClickListener {
     fun onItemClick(oneTimeKavicItem: OneTimeKavicItem)
     fun onItemLongClick(position: Int, view: View, oneTimeKavicItem: OneTimeKavicItem): Boolean
-    fun checkBoxChecked(oneTimeKavicItem: OneTimeKavicItem)
+    fun checkBoxCheckedPopUp(oneTimeKavicItem: OneTimeKavicItem)
 }
