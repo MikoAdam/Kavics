@@ -106,6 +106,7 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                 title = editTextTitle.text.toString(),
                 description = editTextDescription.text.toString(),
                 deadline = deadlineDate,
+                beforeDeadline = checkBoxBeforeDeadline.isChecked,
                 howManyMinutes = getHowManyMinutes()
             )
         )
@@ -143,6 +144,7 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                 title = editTextTitle.text.toString(),
                 description = editTextDescription.text.toString(),
                 deadline = dateHelper.getToday(),
+                beforeDeadline = true,
                 howManyMinutes = getHowManyMinutes()
             )
         )

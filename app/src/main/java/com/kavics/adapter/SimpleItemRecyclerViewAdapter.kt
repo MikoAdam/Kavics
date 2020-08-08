@@ -3,6 +3,8 @@ package com.kavics.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
@@ -17,7 +19,7 @@ import kotlinx.android.synthetic.main.kavic_cardview.view.*
 import java.util.*
 import kotlin.concurrent.schedule
 
-class SimpleItemRecyclerViewAdapter(val context: Context) :
+class SimpleItemRecyclerViewAdapter(private val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var timer: TimerTask
@@ -55,6 +57,12 @@ class SimpleItemRecyclerViewAdapter(val context: Context) :
             holder.checkBoxDone.isChecked = false
             val howManyMinutes = "${kavic.howManyMinutes} mins"
             holder.tvHowManyMinutes.text = howManyMinutes
+
+            if (kavic.beforeDeadline || kavic.deadline == dateHelper.getToday()) {
+                holder.checkBoxDone.visibility = VISIBLE
+            } else {
+                holder.checkBoxDone.visibility = INVISIBLE
+            }
 
         } else if (holder is DeadlineDateViewViewHolder) {
 

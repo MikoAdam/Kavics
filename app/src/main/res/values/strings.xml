@@ -32,6 +32,7 @@
     <string name="repeating_kavics">Repeating Kavics</string>
 
     <string name="display_mins"> %$ mins</string>
+    <string name="can_you_do_it_before_deadline">Can you do it before deadline?</string>
 
 
 </resources>

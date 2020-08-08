@@ -15,6 +15,7 @@ class OneTimeKavicItem(
     override var deadline: String = "",
     @ColumnInfo(name = "kavicHowManyMinutes")
     override var howManyMinutes: Int = 0,
+    var beforeDeadline: Boolean = true,
     var done: Boolean = false,
     var isArchive: Boolean = false
 

@@ -18,6 +18,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewChosenDeadline"
         app:layout_constraintVertical_bias="0.498" />
 
+    <CheckBox
+        android:id="@+id/checkBoxBeforeDeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/can_you_do_it_before_deadline"
+        app:layout_constraintBottom_toTopOf="@+id/btnChooseDeadline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewChosenDeadline" />
+
     <TextView
         android:id="@+id/textViewChosenDeadline"
         android:layout_width="wrap_content"

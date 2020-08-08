@@ -124,6 +124,7 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
                             title = i.title,
                             description = i.description,
                             deadline = dateHelper.getToday(),
+                            beforeDeadline = true,
                             howManyMinutes = i.howManyMinutes
                         )
                     )
