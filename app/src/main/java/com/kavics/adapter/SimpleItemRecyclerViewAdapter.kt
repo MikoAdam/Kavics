@@ -49,14 +49,14 @@ class SimpleItemRecyclerViewAdapter(private val context: Context) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val kavic = kavicList[position]
+        val timeHelper = TimeHelper()
 
         if (holder is KavicCardViewViewHolder) {
 
             holder.oneTimeKavicItem = kavic as OneTimeKavicItem
             holder.tvTitle.text = kavic.title
             holder.checkBoxDone.isChecked = false
-            val howManyMinutes = "${kavic.howManyMinutes} mins"
-            holder.tvHowManyMinutes.text = howManyMinutes
+            holder.tvHowManyMinutes.text = timeHelper.convertFromMins(kavic.howManyMinutes)
 
             if (kavic.beforeDeadline || kavic.deadline == dateHelper.getToday()) {
                 holder.checkBoxDone.visibility = VISIBLE
@@ -67,8 +67,7 @@ class SimpleItemRecyclerViewAdapter(private val context: Context) :
         } else if (holder is DeadlineDateViewViewHolder) {
 
             holder.kavicItem = kavic as DeadlineItem
-            val displayHowManyMinutes = "${kavic.howManyMinutes} mins"
-            holder.textViewHowManyMinutesSum.text = displayHowManyMinutes
+            holder.textViewHowManyMinutesSum.text = timeHelper.convertFromMins(kavic.howManyMinutes)
 
             when (kavic.deadline) {
                 dateHelper.getToday() -> {
