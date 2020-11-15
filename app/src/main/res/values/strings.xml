@@ -7,7 +7,7 @@
     <string name="date_yyyy_MM_dd">%s %s %s</string>
 
     <string name="today">Today</string>
-    <string name="tomorrow">Today</string>
+    <string name="tomorrow">Tomorrow</string>
     <string name="save">Save</string>
     <string name="title">Title:</string>
     <string name="select_deadline">Select deadline</string>
@@ -33,6 +33,7 @@
 
     <string name="display_mins"> %$ mins</string>
     <string name="can_you_do_it_before_deadline">Can you do it before deadline?</string>
+    <string name="add_button">Add button</string>
 
 
 </resources>
