@@ -38,30 +38,6 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
         setContentView(R.layout.activity_kavic_list)
 
         toolbar.title = "Kavics"
-        toolbar.inflateMenu(R.menu.main_menu)
-
-        toolbar.setOnMenuItemClickListener(
-
-            fun(menuItem: MenuItem?): Boolean {
-
-                if (menuItem != null) {
-                    when (menuItem.itemId) {
-                        R.id.archive -> {
-                            observeArchivedKavicsWithRecyclerView()
-                            setupRecyclerView()
-                        }
-                        R.id.repeating_kavics -> {
-
-                        }
-
-                        else -> super.onOptionsItemSelected(menuItem)
-                    }
-                }
-
-                return true
-
-            }
-        )
 
         fab.setOnClickListener {
             startActivity(Intent(this, CreateKavicActivity::class.java))
@@ -122,7 +98,6 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
                     kavicViewModel.insertOneTimeKavic(
                         OneTimeKavicItem(
                             title = i.title,
-                            description = i.description,
                             deadline = dateHelper.getToday(),
                             beforeDeadline = true,
                             howManyMinutes = i.howManyMinutes

@@ -113,7 +113,6 @@ class CreateKavicFragment : Fragment(R.layout.fragment_create_kavic),
         kavicViewModel.insertOneTimeKavic(
             OneTimeKavicItem(
                 title = editTextTitle.text.toString(),
-                description = editTextDescription.text.toString(),
                 deadline = deadlineDate,
                 beforeDeadline = checkBoxBeforeDeadline.isChecked,
                 howManyMinutes = getHowManyMinutes()
@@ -137,7 +136,6 @@ class CreateKavicFragment : Fragment(R.layout.fragment_create_kavic),
         addRepeatingKavicItem(
             RepeatingKavicItem(
                 title = editTextTitle.text.toString(),
-                description = editTextDescription.text.toString(),
                 startDate = startDate,
                 lastDate = endDate,
                 repeatDays = editTextHowManyDays.text.toString().toInt(),
@@ -151,7 +149,6 @@ class CreateKavicFragment : Fragment(R.layout.fragment_create_kavic),
         kavicViewModel.insertOneTimeKavic(
             OneTimeKavicItem(
                 title = editTextTitle.text.toString(),
-                description = editTextDescription.text.toString(),
                 deadline = dateHelper.getToday(),
                 beforeDeadline = true,
                 howManyMinutes = getHowManyMinutes()

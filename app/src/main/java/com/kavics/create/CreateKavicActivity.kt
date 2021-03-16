@@ -104,7 +104,6 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         kavicViewModel.insertOneTimeKavic(
             OneTimeKavicItem(
                 title = editTextTitle.text.toString(),
-                description = editTextDescription.text.toString(),
                 deadline = deadlineDate,
                 beforeDeadline = checkBoxBeforeDeadline.isChecked,
                 howManyMinutes = getHowManyMinutes()
@@ -128,7 +127,6 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         addRepeatingKavicItem(
             RepeatingKavicItem(
                 title = editTextTitle.text.toString(),
-                description = editTextDescription.text.toString(),
                 startDate = startDate,
                 lastDate = endDate,
                 repeatDays = editTextHowManyDays.text.toString().toInt(),
@@ -142,7 +140,6 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         kavicViewModel.insertOneTimeKavic(
             OneTimeKavicItem(
                 title = editTextTitle.text.toString(),
-                description = editTextDescription.text.toString(),
                 deadline = dateHelper.getToday(),
                 beforeDeadline = true,
                 howManyMinutes = getHowManyMinutes()
