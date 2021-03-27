@@ -35,5 +35,10 @@
     <string name="can_you_do_it_before_deadline">Can you do it before deadline?</string>
     <string name="add_button">Add button</string>
 
+    <string name="info">Info</string>
+    <string name="warning">WARNING: this app is in Beta and it is very likely that you will lose your saved tasks in the final version of the app.
+     If you would like to see a new function in the app or you find a bug you can send me an email kavics.feedback@gmail.com
+        Since Kavics is an open source project you can always found the source code here: https://github.com/MikoAdam/Kavics</string>
+
 
 </resources>

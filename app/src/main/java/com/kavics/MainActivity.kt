@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.kavics.adapter.DateHelper
@@ -39,6 +38,28 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
 
         toolbar.title = "Kavics"
 
+        toolbar.inflateMenu(R.menu.main_menu)
+
+        toolbar.setOnMenuItemClickListener(
+
+            fun(menuItem: MenuItem?): Boolean {
+
+                if (menuItem != null) {
+                    when (menuItem.itemId) {
+                        R.id.info -> {
+                            startActivity(Intent(this, InfoActivity::class.java))
+                        }
+
+                        else -> super.onOptionsItemSelected(menuItem)
+                    }
+                }
+
+                return true
+
+            }
+        )
+
+
         fab.setOnClickListener {
             startActivity(Intent(this, CreateKavicActivity::class.java))
         }
@@ -57,20 +78,12 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
         }
     }
 
-    private fun observeArchivedKavicsWithRecyclerView() {
-        kavicViewModel.allArchiveOneTimeKavics.observe(this) { kavic ->
-            simpleItemRecyclerViewAdapter.addAll(kavic.sortedBy { it.deadline })
-        }
-    }
-
     private fun checkNewDay() {
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
         val lastTimeStarted = settings.getInt("last_time_started", -1)
         val today = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
 
         if (today != lastTimeStarted) {
-
-            archiveOldKavics()
 
             MainScope().launch {
                 addRepeatingKavicsForToday()
@@ -80,10 +93,6 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
             editor.putInt("last_time_started", today)
             editor.apply()
         }
-    }
-
-    private fun archiveOldKavics() {
-        kavicViewModel.setArchiveAllOfOneTimeKavics(DateHelper().getToday())
     }
 
     private suspend fun addRepeatingKavicsForToday() = coroutineScope {
@@ -176,19 +185,15 @@ class MainActivity : AppCompatActivity(), KavicItemClickListener, CoroutineScope
         kavicViewModel.updateOneTimeKavic(oneTimeKavicItem)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_kavic, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
-            R.id.archive -> {
-                observeArchivedKavicsWithRecyclerView()
-                setupRecyclerView()
-                true
-            }
-            R.id.repeating_kavics -> {
+            R.id.info -> {
+
                 true
             }
 

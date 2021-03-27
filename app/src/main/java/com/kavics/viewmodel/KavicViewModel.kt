@@ -14,15 +14,12 @@ class KavicViewModel : ViewModel() {
     private val repositoryOneTimeKavic: RepositoryOneTimeKavic
 
     var allOneTimeKavics: LiveData<List<OneTimeKavicItem>>
-    var allArchiveOneTimeKavics: LiveData<List<OneTimeKavicItem>>
 
     init {
         val oneTimeKavicDao = KavicApplication.kavicDatabase.kavicDAO()
         repositoryOneTimeKavic =
             RepositoryOneTimeKavic(oneTimeKavicDao)
         allOneTimeKavics = repositoryOneTimeKavic.getAllKavics()
-
-        allArchiveOneTimeKavics = repositoryOneTimeKavic.getAllArchiveKavics()
 
     }
 
@@ -36,10 +33,6 @@ class KavicViewModel : ViewModel() {
 
     fun updateOneTimeKavic(oneTimeKavicItem: OneTimeKavicItem) = viewModelScope.launch {
         repositoryOneTimeKavic.updateOneTimeKavic(oneTimeKavicItem)
-    }
-
-    fun setArchiveAllOfOneTimeKavics(today: String) = viewModelScope.launch {
-        repositoryOneTimeKavic.setArchiveAllOfOneTimeKavics(today)
     }
 
     fun insertRepeatingKavic(repeatingKavicItem: RepeatingKavicItem) = viewModelScope.launch {
