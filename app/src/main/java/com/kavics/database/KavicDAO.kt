@@ -17,8 +17,11 @@ interface KavicDAO {
     @Delete
     fun delete(oneTimeKavicItem: OneTimeKavicItem)
 
-    @Query("SELECT * FROM kavicsDatabase ORDER BY deadline")
+    @Query("SELECT * FROM kavicsDatabase")
     fun getKavicsAll(): LiveData<List<OneTimeKavicItem>>
+
+    //@Query("SELECT * FROM kavicsDatabase ORDER BY deadline")
+    //fun getKavicsAll(): LiveData<List<OneTimeKavicItem>>
 
     @Query("SELECT * FROM kavicsDatabase WHERE done = 0 AND isArchive = 1")
     fun getArchiveKavics(): LiveData<List<OneTimeKavicItem>>
@@ -35,8 +38,8 @@ interface KavicDAO {
     @Query("Update kavicsDatabase SET done = 1 WHERE id = :id")
     fun setDoneKavics(id: Int)
 
-    @Query("UPDATE kavicsDatabase SET isArchive = 1 WHERE deadline < :today")
-    fun setArchiveAllOfOneTimeKavics(today: String)
+    //@Query("UPDATE kavicsDatabase SET isArchive = 1 WHERE deadline < :today")
+    //fun setArchiveAllOfOneTimeKavics(today: String)
 
     @Query("SELECT * FROM repeatingKavicsDatabase")
     suspend fun getAllRepeatingKavics(): List<RepeatingKavicItem>

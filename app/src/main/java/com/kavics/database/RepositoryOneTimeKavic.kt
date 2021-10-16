@@ -32,9 +32,9 @@ class RepositoryOneTimeKavic(private val kavicDAO: KavicDAO) {
             kavicDAO.update(oneTimeKavicItem)
         }
 
-    suspend fun setArchiveAllOfOneTimeKavics(today: String) = withContext(Dispatchers.IO) {
+    /*suspend fun setArchiveAllOfOneTimeKavics(today: String) = withContext(Dispatchers.IO) {
         kavicDAO.setArchiveAllOfOneTimeKavics(today)
-    }
+    }*/
 
     suspend fun getAllRepeatingKavics(): List<RepeatingKavicItem> =
         withContext(Dispatchers.IO) {
