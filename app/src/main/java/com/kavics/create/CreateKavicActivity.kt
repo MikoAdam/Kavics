@@ -191,7 +191,7 @@ class CreateKavicActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         val deadlineHelper = DateHelper()
 
         var monthAsString = "${month + 1}"
-        if (month.toString().length == 1) {
+        if (monthAsString.length == 1) {
             monthAsString = "0${month + 1}"
         }
 
